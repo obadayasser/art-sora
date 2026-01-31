@@ -23,11 +23,11 @@ const FRAME_IMAGES = [
 // مكون الإطار مع صورة اللاعب
 function FrameCard({ position, rotation, delay, imageIndex, direction }: any) {
   const meshRef = useRef<any>(null);
-  
+
   // استخدام texture loader لتحميل الصور
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
   const [hovered, setHovered] = useState(false);
-  
+
   useEffect(() => {
     const loader = new THREE.TextureLoader();
     loader.load(
@@ -38,7 +38,7 @@ function FrameCard({ position, rotation, delay, imageIndex, direction }: any) {
       },
       undefined,
       (error) => {
- 
+
         setTexture(null);
       }
     );
@@ -56,9 +56,9 @@ function FrameCard({ position, rotation, delay, imageIndex, direction }: any) {
 
   return (
     <Float speed={1} rotationIntensity={0.2} floatIntensity={0.3}>
-      <group 
-        ref={meshRef} 
-        position={position} 
+      <group
+        ref={meshRef}
+        position={position}
         rotation={rotation}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
@@ -66,38 +66,38 @@ function FrameCard({ position, rotation, delay, imageIndex, direction }: any) {
         {/* الإطار الخارجي - أسود */}
         <mesh castShadow>
           <boxGeometry args={[1.8, 2.3, 0.08]} />
-          <meshStandardMaterial 
-            color="#1a1a1a" 
-            metalness={0.7} 
+          <meshStandardMaterial
+            color="#1a1a1a"
+            metalness={0.7}
             roughness={0.3}
           />
         </mesh>
-        
+
         {/* الإطار الداخلي - ذهبي */}
         <mesh position={[0, 0, 0.03]}>
           <boxGeometry args={[1.7, 2.2, 0.04]} />
-          <meshStandardMaterial 
-            color="#FFD700" 
-            metalness={0.9} 
+          <meshStandardMaterial
+            color="#FFD700"
+            metalness={0.9}
             roughness={0.1}
             emissive="#FFD700"
             emissiveIntensity={hovered ? 0.15 : 0}
           />
         </mesh>
-        
+
         {/* طبقة خلفية للصورة */}
         <mesh position={[0, 0, 0.05]}>
           <planeGeometry args={[1.55, 2.05]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
-        
+
         {/* الصورة - تملأ المساحة بالكامل */}
         <mesh position={[0, 0, 0.06]}>
           <planeGeometry args={[1.55, 2.05]} />
           {texture ? (
             <meshBasicMaterial map={texture} />
           ) : (
-            <meshStandardMaterial 
+            <meshStandardMaterial
               color="#2a2a2a"
               emissive="#3b82f6"
               emissiveIntensity={0.1}
@@ -117,36 +117,36 @@ function HeroScene() {
     <>
       {/* الإضاءة */}
       <ambientLight intensity={0.5} />
-      <directionalLight 
-        position={[5, 5, 5]} 
-        intensity={1.5} 
+      <directionalLight
+        position={[5, 5, 5]}
+        intensity={1.5}
         color="#ffffff"
         castShadow
       />
       <pointLight position={[-3, 3, 2]} intensity={0.8} color="#3b82f6" />
       <pointLight position={[3, -3, 2]} intensity={0.8} color="#10b981" />
-      
+
       {/* إطارات الصور - الصف العلوي (تتحرك لليمين) */}
       <FrameCard position={[-5, 3.5, -3]} rotation={[0, 0.4, 0]} delay={0} imageIndex={0} direction={1} />
       <FrameCard position={[-2, 3, -2.5]} rotation={[0, 0.3, 0]} delay={0.5} imageIndex={1} direction={1} />
       <FrameCard position={[1, 3.2, -3]} rotation={[0, 0.2, 0]} delay={1} imageIndex={2} direction={1} />
       <FrameCard position={[4, 3.5, -2.5]} rotation={[0, 0.1, 0]} delay={1.5} imageIndex={3} direction={1} />
       <FrameCard position={[6.5, 3, -3]} rotation={[0, 0.05, 0]} delay={2} imageIndex={4} direction={1} />
-      
+
       {/* إطارات الصور - الصف السفلي (تتحرك لليسار) */}
       <FrameCard position={[-6.5, -3, -3]} rotation={[0, -0.1, 0]} delay={0} imageIndex={5} direction={-1} />
       <FrameCard position={[-4, -3.5, -2.5]} rotation={[0, -0.2, 0]} delay={0.5} imageIndex={6} direction={-1} />
       <FrameCard position={[-1, -3, -3]} rotation={[0, -0.3, 0]} delay={1} imageIndex={7} direction={-1} />
       <FrameCard position={[2, -3.5, -2.5]} rotation={[0, -0.4, 0]} delay={1.5} imageIndex={8} direction={-1} />
       <FrameCard position={[5, -3, -3]} rotation={[0, -0.5, 0]} delay={2} imageIndex={9} direction={-1} />
-      
+
       {/* النجوم الخلفية */}
       <Stars radius={100} depth={50} count={1000} factor={4} />
-      
+
       <Environment preset="studio" />
-      
+
       {/* التحكم في الكاميرا */}
-      <OrbitControls 
+      <OrbitControls
         enableZoom={false}
         enablePan={false}
         autoRotate
@@ -166,7 +166,7 @@ export function Hero() {
     target: containerRef,
     offset: ["start start", "end start"]
   });
-  
+
   const y = useTransform(scrollYProgress, [0, 1], [0, -80]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
@@ -189,7 +189,7 @@ export function Hero() {
       </div>
 
       {/* المحتوى في الأسفل */}
-      <motion.div 
+      <motion.div
         style={{ y, opacity, scale }}
         className="relative z-10 px-4 pb-12 pt-8"
       >
@@ -210,7 +210,7 @@ export function Hero() {
               {/* تأثير توهج تحت العنوان */}
               <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-50" />
             </div>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
@@ -227,8 +227,8 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-base md:text-lg text-white/80 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
-            Discover exclusive premium frames featuring football legends, music icons, 
-            TV series stars, and all your favorite moments. Own a piece of history 
+            Discover exclusive premium frames featuring football legends, music icons,
+            TV series stars, and all your favorite moments. Own a piece of history
             in stunning golden frames.
           </motion.p>
 
@@ -242,6 +242,8 @@ export function Hero() {
             <motion.button
               whileHover={{ scale: 1.08, boxShadow: "0 10px 40px rgba(59, 130, 246, 0.4)" }}
               whileTap={{ scale: 0.95 }}
+              /* route to products page */
+              onClick={() => window.location.href = '/products'}
               className="px-8 py-3.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold text-lg shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 border border-blue-400/30"
             >
               <span className="flex items-center gap-2">
@@ -255,6 +257,9 @@ export function Hero() {
               whileHover={{ scale: 1.08, boxShadow: "0 10px 40px rgba(16, 185, 129, 0.4)" }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-bold text-lg shadow-2xl hover:shadow-emerald-500/50 transition-all duration-300 border border-emerald-400/30"
+
+              /* route to products page */
+              onClick={() => window.location.href = '/products'}
             >
               <span className="flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,4 +294,3 @@ export function Hero() {
   );
 }
 
- 
