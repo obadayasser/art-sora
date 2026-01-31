@@ -18,7 +18,7 @@ export function Navbar() {
 
     const navLinks = [
         { href: "/", label: t("common.home"), requiresAuth: false },
-        { href: "/gallery", label: t("common.gallery"), requiresAuth: false },
+        { href: "/products", label: "Products", requiresAuth: false },
         { href: "/artists", label: t("common.artists"), requiresAuth: false },
         { href: "/exhibitions", label: t("common.exhibitions"), requiresAuth: false },
         { href: "/about", label: t("common.about"), requiresAuth: false },

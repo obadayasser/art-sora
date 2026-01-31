@@ -8,32 +8,15 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/a
 
 // Logging helpers
 function logApiCall(method: string, endpoint: string, params?: any) {
-  console.log('🔵 [CLIENT] API REQUEST:', {
-    method,
-    url: `${API_BASE_URL}${endpoint}`,
-    params,
-    timestamp: new Date().toISOString(),
-  });
+ 
 }
 
 function logApiResponse(method: string, endpoint: string, response: Response) {
-  console.log('🟢 [CLIENT] API RESPONSE:', {
-    method,
-    url: `${API_BASE_URL}${endpoint}`,
-    status: response.status,
-    statusText: response.statusText,
-    ok: response.ok,
-    timestamp: new Date().toISOString(),
-  });
+  
 }
 
 function logApiError(method: string, endpoint: string, error: any) {
-  console.error('🔴 [CLIENT] API ERROR:', {
-    method,
-    url: `${API_BASE_URL}${endpoint}`,
-    error: error.message,
-    timestamp: new Date().toISOString(),
-  });
+ 
 }
 
 export async function clientGetCategories(active: boolean = true): Promise<Category[]> {
@@ -53,11 +36,11 @@ export async function clientGetCategories(active: boolean = true): Promise<Categ
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Categories Data:', data);
+   
     return data.data || [];
   } catch (error) {
     logApiError('GET', endpoint, error);
-    console.error('Error fetching categories:', error);
+   
     return [];
   }
 }
@@ -78,11 +61,11 @@ export async function clientGetCategoryById(id: number): Promise<Category | null
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Category Data:', data);
+   
     return data.data || null;
   } catch (error) {
     logApiError('GET', endpoint, error);
-    console.error('Error fetching category:', error);
+   
     return null;
   }
 }
@@ -103,11 +86,11 @@ export async function clientGetCategoryBySlug(slug: string): Promise<Category | 
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Category Data:', data);
+   
     return data.data || null;
   } catch (error) {
     logApiError('GET', endpoint, error);
-    console.error('Error fetching category:', error);
+   
     return null;
   }
 }
@@ -139,18 +122,15 @@ export async function clientGetProducts(params?: {
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Products Data:', {
-      count: data.data?.length || 0,
-      products: data.data,
-      pagination: data.pagination,
-    });
+   
+  
     return {
       products: data.data || [],
       pagination: data.pagination,
     };
   } catch (error) {
     logApiError('GET', endpoint, error);
-    console.error('Error fetching products:', error);
+   
     return { products: [] };
   }
 }
@@ -171,11 +151,11 @@ export async function clientGetProductById(id: number): Promise<Product | null> 
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Product Data:', data);
+   
     return data.data || null;
   } catch (error) {
     logApiError('GET', endpoint, error);
-    console.error('Error fetching product:', error);
+   
     return null;
   }
 }
@@ -196,11 +176,11 @@ export async function clientGetProductBySlug(slug: string): Promise<Product | nu
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Product Data:', data);
+   
     return data.data || null;
   } catch (error) {
     logApiError('GET', endpoint, error);
-    console.error('Error fetching product:', error);
+   
     return null;
   }
 }
@@ -221,11 +201,11 @@ export async function clientGetCountries(active: boolean = true) {
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Countries Data:', data);
+   
     return data.data || [];
   } catch (error) {
     logApiError('GET', endpoint, error);
-    console.error('Error fetching countries:', error);
+   
     return [];
   }
 }
@@ -246,11 +226,11 @@ export async function clientGetGovernorates(countryId: number, active: boolean =
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Governorates Data:', data);
+   
     return data.data || [];
   } catch (error) {
     logApiError('GET', endpoint, error);
-    console.error('Error fetching governorates:', error);
+   
     return [];
   }
 }
@@ -276,11 +256,11 @@ export async function clientValidateDiscountCode(code: string, subtotal: number)
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Discount Code Validation Data:', data);
+   
     return data.data || null;
   } catch (error) {
     logApiError('POST', endpoint, error);
-    console.error('Error validating discount code:', error);
+   
     return null;
   }
 }
@@ -320,11 +300,11 @@ export async function clientCreateOrder(orderData: {
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Order Created Data:', data);
+   
     return data.data || null;
   } catch (error) {
     logApiError('POST', endpoint, error);
-    console.error('Error creating order:', error);
+   
     return null;
   }
 }
@@ -359,18 +339,15 @@ export async function clientSearchProducts(params: {
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Search Results Data:', {
-      resultsCount: data.results?.length || 0,
-      results: data.results,
-      pagination: data.pagination,
-    });
+   
+ 
     return {
       results: data.results || [],
       pagination: data.pagination || {},
     };
   } catch (error) {
     logApiError('POST', endpoint, error);
-    console.error('Error searching products:', error);
+   
     return { results: [], pagination: {} };
   }
 }
@@ -392,11 +369,11 @@ export async function clientRecordProductView(productId: number) {
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Product View Recorded:', data);
+   
     return data;
   } catch (error) {
     logApiError('POST', endpoint, error);
-    console.error('Error recording product view:', error);
+   
     return null;
   }
 }
@@ -417,11 +394,11 @@ export async function clientGetProductReviews(productId: number, onlyApproved: b
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Product Reviews Data:', data);
+   
     return data.data || [];
   } catch (error) {
     logApiError('GET', endpoint, error);
-    console.error('Error fetching product reviews:', error);
+   
     return [];
   }
 }
@@ -450,11 +427,11 @@ export async function clientAddReview(reviewData: {
     }
 
     const data = await response.json();
-    console.log('✅ [CLIENT] Review Added Data:', data);
+   
     return data.data || null;
   } catch (error) {
     logApiError('POST', endpoint, error);
-    console.error('Error adding review:', error);
+   
     return null;
   }
 }

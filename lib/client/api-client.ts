@@ -9,37 +9,21 @@ function generateUUID(): string {
   });
 }
 
-// Initialize IDs automatically when the file loads
-(function initializeIds() {
-  if (typeof window !== 'undefined') {
-    // Initialize App ID
-    let appId = localStorage.getItem('app_id');
-    if (!appId) {
-      appId = generateUUID();
-      localStorage.setItem('app_id', appId);
-      console.log('🔵 App ID generated:', appId);
-    }
-
-    // Initialize Device ID
-    let deviceId = localStorage.getItem('device_id');
-    if (!deviceId) {
-      deviceId = generateUUID();
-      localStorage.setItem('device_id', deviceId);
-      console.log('🔵 Device ID generated:', deviceId);
-    }
-  }
-})();
-
 // Helper function to get App ID (runs on client side)
 export function getAppId(): string {
   if (typeof window !== 'undefined') {
-    const appId = localStorage.getItem('app_id');
-    if (!appId) {
-      const newId = generateUUID();
-      localStorage.setItem('app_id', newId);
-      return newId;
+    try {
+      const appId = localStorage.getItem('app_id');
+      if (!appId) {
+        const newId = generateUUID();
+        localStorage.setItem('app_id', newId);
+        return newId;
+      }
+      return appId;
+    } catch (error) {
+      // If localStorage is not available (e.g., in private mode), generate a temporary UUID
+      return generateUUID();
     }
-    return appId;
   }
   return '';
 }
@@ -47,13 +31,18 @@ export function getAppId(): string {
 // Helper function to generate Device ID
 export function getDeviceId(): string {
   if (typeof window !== 'undefined') {
-    const deviceId = localStorage.getItem('device_id');
-    if (!deviceId) {
-      const newId = generateUUID();
-      localStorage.setItem('device_id', newId);
-      return newId;
+    try {
+      const deviceId = localStorage.getItem('device_id');
+      if (!deviceId) {
+        const newId = generateUUID();
+        localStorage.setItem('device_id', newId);
+        return newId;
+      }
+      return deviceId;
+    } catch (error) {
+      // If localStorage is not available (e.g., in private mode), generate a temporary UUID
+      return generateUUID();
     }
-    return deviceId;
   }
   return '';
 }

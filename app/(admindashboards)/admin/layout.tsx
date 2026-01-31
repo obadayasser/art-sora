@@ -67,29 +67,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   // Redirect to login if not authenticated - ONLY after initialization is complete
   useEffect(() => {
-    console.log('🔒 Auth Check:', { isLoading, isInitialized, isAuthenticated, pathname });
+    
     
     // Don't redirect if not initialized yet
     if (!isInitialized) {
-      console.log('⏳ Not initialized, waiting...');
+      
       return;
     }
     
     // If authenticated and on login page, redirect to dashboard
     if (isAuthenticated && pathname === '/admin/login') {
-      console.log('✅ Already authenticated, redirecting to dashboard');
+      
       router.replace('/admin');
       return;
     }
     
     // If not authenticated and not on login page, redirect to login
     if (!isAuthenticated && pathname !== '/admin/login') {
-      console.log('🚫 Not authenticated, redirecting to login');
+      
       router.replace('/admin/login');
       return;
     }
     
-    console.log('✅ Auth check passed, staying on page');
+    
   }, [isAuthenticated, pathname, router, isInitialized]);
 
   const handleLogout = () => {

@@ -34,7 +34,7 @@ export function SpecialOffersSection() {
           setSelectedCategoryId(offerCategories[0].id);
         }
       } catch (error) {
-        console.error('Error fetching categories:', error);
+      
       }
     };
     fetchCategories();
@@ -55,7 +55,7 @@ export function SpecialOffersSection() {
           setLoading(false);
           setProductsLoading(false);
         } catch (error) {
-          console.error('Error fetching products:', error);
+        
           setLoading(false);
           setProductsLoading(false);
         }

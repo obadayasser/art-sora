@@ -38,7 +38,7 @@ function FrameCard({ position, rotation, delay, imageIndex, direction }: any) {
       },
       undefined,
       (error) => {
-        console.error("Error loading image:", error);
+ 
         setTexture(null);
       }
     );

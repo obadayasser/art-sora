@@ -196,8 +196,8 @@ export default function ProductDetailPage() {
               <span>•</span>
               {/*         <span className={product.stockQuantity > 0 ? 'text-green-500' : 'text-red-500'}>
                 {product.stockQuantity > 0
-                  ? `${t('product.inStock') || 'متوفر'} (${product.stockQuantity})`
-                  : t('product.outOfStock') || 'غير متوفر'
+                  ? `${t('product.inStock') || 'Available'} (${product.stockQuantity})`
+                  : t('product.outOfStock') || 'غير Available'
                 }
               </span> */}
             </div>
@@ -273,15 +273,15 @@ export default function ProductDetailPage() {
                 {selectedVariant?.stockQuantity !== undefined ? (
                   <span className={selectedVariant.stockQuantity > 0 ? 'text-green-500' : 'text-red-500'}>
                     {selectedVariant.stockQuantity > 0
-                      ? `متوفر (${selectedVariant.stockQuantity})`
-                      : 'غير متوفر'
+                      ? `Available (${selectedVariant.stockQuantity})`
+                      : 'غير Available'
                     }
                   </span>
                 ) : (
                   <span className={product.stockQuantity > 0 ? 'text-green-500' : 'text-red-500'}>
                     {product.stockQuantity > 0
-                      ? `متوفر (${product.stockQuantity})`
-                      : 'غير متوفر'
+                      ? `Available (${product.stockQuantity})`
+                      : 'غير Available'
                     }
                   </span>
                 )}

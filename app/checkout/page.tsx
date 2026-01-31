@@ -809,7 +809,7 @@ export default function CheckoutPage() {
                         {item.product.nameAr}
                       </p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Qty: {item.quantity} × ${(parseFloat(item.product.salePrice || item.product.basePrice)).toFixed(2)}
+                        Qty: {item.quantity} × LE {(parseFloat(item.product.salePrice || item.product.basePrice)).toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -864,13 +864,13 @@ export default function CheckoutPage() {
               <div className="space-y-3 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex justify-between text-gray-700 dark:text-gray-300">
                   <span>Subtotal</span>
-                  <span>${calculateSubtotal().toFixed(2)}</span>
+                  <span>LE {calculateSubtotal().toFixed(2)}</span>
                 </div>
 
                 {discount?.isValid && (
                   <div className="flex justify-between text-green-600 dark:text-green-400">
                     <span>Discount ({discount.code})</span>
-                    <span>-${calculateDiscountAmount().toFixed(2)}</span>
+                    <span>-LE {calculateDiscountAmount().toFixed(2)}</span>
                   </div>
                 )}
 
@@ -879,7 +879,7 @@ export default function CheckoutPage() {
                     <Truck size={16} className="mr-2" />
                     <span>Shipping</span>
                   </div>
-                  <span>${shippingCost}</span>
+                  <span>LE {shippingCost}</span>
                 </div>
 
                 {estimatedDays > 0 && (
@@ -890,7 +890,7 @@ export default function CheckoutPage() {
 
                 <div className="flex justify-between text-lg font-bold text-gray-900 dark:text-white pt-3 border-t border-gray-200 dark:border-gray-700">
                   <span>Total</span>
-                  <span className="text-purple-500">${calculateTotal().toFixed(2)}</span>
+                  <span className="text-purple-500">LE {calculateTotal().toFixed(2)}</span>
                 </div>
               </div>
 

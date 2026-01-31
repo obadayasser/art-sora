@@ -359,7 +359,7 @@ function ProductCard({ product, addToCart, isMobile }: {
                     {/* Stock Indicator */}
                     {displayStock !== undefined && (
                         <div className={`text-xs mt-1 ${displayStock > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                            {displayStock > 0 ? `متوفر (${displayStock})` : 'غير متوفر'}
+                            {displayStock > 0 ? `Available (${displayStock})` : 'غير Available'}
                         </div>
                     )}
                 </div>

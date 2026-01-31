@@ -34,11 +34,11 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Prevent multiple initializations
     if (authInitializedRef.current) {
-      console.log('⏭️ Already initialized, skipping...');
+     
       return;
     }
     
-    console.log('🔍 Loading admin data from cookies...');
+   
     
     if (typeof window !== 'undefined') {
       // Check if token exists in cookies
@@ -54,12 +54,8 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
       const cookieToken = getCookie('accessToken');
       const cookieAdmin = getCookie('admin');
 
-      console.log('🍪 Cookies Found:', { 
-        hasAccessToken: !!cookieToken, 
-        accessTokenLength: cookieToken?.length,
-        hasAdmin: !!cookieAdmin 
-      });
-      console.log('🍪 All Cookies:', document.cookie);
+      
+     
 
       // Load data synchronously
       let adminData: AdminUser | null = null;
@@ -69,13 +65,13 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
         try {
           adminData = JSON.parse(decodeURIComponent(cookieAdmin));
           isAuthenticated = true;
-          console.log('👤 Admin Data Loaded:', adminData);
-          console.log('✅ Admin authenticated from cookies');
+         
+         
         } catch (error) {
-          console.error('❌ Error parsing admin data from cookie:', error);
+          
         }
       } else {
-        console.log('⚠️ No admin cookies found, user not authenticated');
+       
       }
 
       // Update all states at once
@@ -88,7 +84,7 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const clearAdminData = useCallback(() => {
-    console.log('🧹 Clearing admin data and cookies...');
+   
     setAdmin(null);
     setToken(null);
     setTwoFactorRequired(false);
@@ -99,17 +95,17 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
       document.cookie = 'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = 'admin=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-      console.log('🍪 Cookies cleared');
+     
     }
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    console.log('🚀 Starting login process for:', email);
+   
     try {
       setIsLoading(true);
       
       const response = await adminLogin(email, password);
-      console.log('📦 Login response received:', response);
+     
       
       // Store credentials for potential 2FA
       setPendingCredentials({ email, password });
@@ -126,25 +122,25 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
         createdAt: response.user.createdAt
       };
 
-      console.log('✅ Setting admin user:', adminUser);
+     
       setAdmin(adminUser);
       setToken(response.accessToken);
       
       // Check if 2FA is required
       const requires2FA = response.requiresTwoFactor || false;
-      console.log('🔐 2FA Required:', requires2FA);
+     
       
       if (requires2FA) {
         // Set pending state and wait for 2FA verification
         setTwoFactorRequired(true);
-        console.log('⏳ Waiting for 2FA verification...');
+       
       } else {
         // No 2FA required, mark as fully authenticated
         setTwoFactorRequired(false);
-        console.log('✅ Login successful without 2FA!');
+       
       }
     } catch (error: any) {
-      console.error('❌ Login failed:', error);
+      
       clearAdminData();
       throw new Error(error.message || 'Login failed');
     } finally {
@@ -153,7 +149,7 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   }, [clearAdminData]);
 
   const verifyTwoFactorCode = useCallback(async (code: string) => {
-    console.log('🔐 Verifying 2FA code...');
+   
     try {
       setIsLoading(true);
       
@@ -162,7 +158,7 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       const response = await verifyTwoFactor(code, token);
-      console.log('📦 2FA Verification response:', response);
+     
       
       if (!response.isValid) {
         throw new Error(response.message || 'Invalid verification code');
@@ -171,10 +167,10 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
       // 2FA verified, admin is now fully authenticated
       setTwoFactorRequired(false);
       setPendingCredentials(null);
-      console.log('✅ 2FA verification successful!');
+     
       
     } catch (error: any) {
-      console.error('❌ 2FA verification failed:', error);
+      
       throw new Error(error.message || 'Verification failed');
     } finally {
       setIsLoading(false);

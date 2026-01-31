@@ -19,20 +19,20 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/a
 async function handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
   const contentType = response.headers.get('content-type');
   
-  console.log('📤 API Response Status:', response.status, response.url);
+
   
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
-    console.error('❌ API Error: Non-JSON response', contentType, text.substring(0, 200));
+  
     throw new Error(`Expected JSON but got ${contentType}. Response: ${text.substring(0, 200)}`);
   }
 
   const data = await response.json();
-  console.log('📥 API Response Data:', data);
+
 
   if (!response.ok) {
     const error = data as ApiErrorResponse;
-    console.error('❌ API Error:', error);
+  
     throw new Error(error.message || error.error || 'An error occurred');
   }
 
@@ -146,7 +146,7 @@ export async function getProductVariant(productId: number, variantId: number): P
  * Get all countries
  */
 export async function getCountries(): Promise<Country[]> {
-  console.log('🌍 Getting countries...');
+
   const response = await fetch(`${API_BASE_URL}/locations/countries?active=true`, {
     method: 'GET',
     headers: getHeaders(),
@@ -154,7 +154,7 @@ export async function getCountries(): Promise<Country[]> {
   });
 
   const result = await handleResponse<Country[]>(response);
-  console.log('✅ Countries received:', result.data);
+
   return result.data;
 }
 
@@ -162,7 +162,7 @@ export async function getCountries(): Promise<Country[]> {
  * Get governorates by country
  */
 export async function getGovernorates(countryId: number): Promise<Governorate[]> {
-  console.log('🏙️ Getting governorates for country:', countryId);
+
   const response = await fetch(`${API_BASE_URL}/locations/governorates?countryId=${countryId}&active=true`, {
     method: 'GET',
     headers: getHeaders(),
@@ -170,7 +170,7 @@ export async function getGovernorates(countryId: number): Promise<Governorate[]>
   });
 
   const result = await handleResponse<Governorate[]>(response);
-  console.log('✅ Governorates received:', result.data);
+
   return result.data;
 }
 
@@ -208,7 +208,7 @@ interface DiscountValidationResponse {
  * Validate discount code
  */
 export async function validateDiscountCode(code: string, subtotal: number): Promise<DiscountValidationResponse> {
-  console.log('🎟️ Validating discount code:', code, 'subtotal:', subtotal);
+
   const response = await fetch(`${API_BASE_URL}/discounts/validate`, {
     method: 'POST',
     headers: getHeaders(),
@@ -217,7 +217,7 @@ export async function validateDiscountCode(code: string, subtotal: number): Prom
   });
 
   const result = await handleResponse<DiscountValidationResponse>(response);
-  console.log('✅ Discount validation result:', result.data);
+
   return result.data;
 }
 
@@ -248,7 +248,7 @@ export interface CreateOrderInput {
  * Create new order
  */
 export async function createOrder(orderData: CreateOrderInput): Promise<any> {
-  console.log('🛒 Creating order:', orderData);
+
   const response = await fetch(`${API_BASE_URL}/orders`, {
     method: 'POST',
     headers: getHeaders(),
@@ -261,24 +261,24 @@ export async function createOrder(orderData: CreateOrderInput): Promise<any> {
   
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
-    console.error('❌ Non-JSON response:', text.substring(0, 200));
+  
     throw new Error(`Expected JSON but got ${contentType}`);
   }
 
   const json = await response.json();
-  console.log('📥 Order creation response:', json);
+
 
   if (!response.ok) {
-    console.error('❌ Order creation failed:', json);
+  
     throw new Error(json.message || json.error || 'Failed to create order');
   }
 
   const data = (json as any).data || json;
-  console.log('✅ Order created successfully:', data);
+
   
   // If it's PayMOP payment and we have paymentUrl, redirect to it
   if (data.paymentDetails?.paymentUrl) {
-    console.log('🌐 Redirecting to PayMOP payment URL:', data.paymentDetails.paymentUrl);
+  
     if (typeof window !== 'undefined') {
       window.location.href = data.paymentDetails.paymentUrl;
     }
@@ -297,11 +297,44 @@ export interface CreateReviewInput {
   customerName: string;
 }
 
+export interface OrderDetail {
+  id: number;
+  orderNumber: string;
+  customerEmail: string;
+  customerName: string;
+  customerPhone: string;
+  countryName: string;
+  governorateName: string;
+  city: string;
+  addressLine1: string;
+  addressLine2?: string;
+  subtotal: string;
+  discountAmount: string;
+  shippingCost: string;
+  taxAmount: string;
+  totalAmount: string;
+  status: 'PENDING' | 'CONFIRMED' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED' | 'REFUNDED';
+  items: Array<{
+    productId: number;
+    productNameAr: string;
+    productNameEn: string;
+    sizeId: number;
+    sizeName: string;
+    quantity: number;
+    unitPrice: string;
+    colorAr?: string;
+    colorEn?: string;
+    colorHex?: string;
+  }>;
+  createdAt: string;
+  estimatedDeliveryDate?: string;
+}
+
 /**
  * Create review
  */
 export async function createReview(reviewData: CreateReviewInput): Promise<any> {
-  console.log('⭐ Creating review:', reviewData);
+
   const response = await fetch(`${API_BASE_URL}/analytics/reviews`, {
     method: 'POST',
     headers: getHeaders(),
@@ -310,7 +343,7 @@ export async function createReview(reviewData: CreateReviewInput): Promise<any> 
   });
 
   const result = await handleResponse<any>(response);
-  console.log('✅ Review created:', result.data);
+
   return result.data;
 }
 
@@ -328,6 +361,24 @@ export async function getProductReviews(productId: number, onlyApproved: boolean
   return result.data;
 }
 
+// ==================== ORDER DETAILS ====================
+
+/**
+ * Get order details by order number
+ */
+export async function getOrderDetails(orderNumber: string): Promise<OrderDetail> {
+
+  const response = await fetch(`${API_BASE_URL}/orders?orderNumber=${orderNumber}`, {
+    method: 'GET',
+    headers: getHeaders(),
+    credentials: 'include'
+  });
+
+  const result = await handleResponse<any>(response);
+
+  return result.data;
+}
+
 // ==================== ANALYTICS ====================
 
 /**
@@ -341,6 +392,6 @@ export async function logProductView(productId: number): Promise<void> {
       credentials: 'include'
     });
   } catch (error) {
-    console.error('Failed to log product view:', error);
+  
   }
 }

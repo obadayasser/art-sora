@@ -74,7 +74,7 @@ export function NewArrivalsSection() {
         setProducts(productsWithMinPrice);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching new arrivals:', error);
+   
         setLoading(false);
       }
     };

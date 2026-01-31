@@ -98,7 +98,7 @@ export default function ProductsManagementPage() {
       setPagination(response.pagination);
     } catch (error) {
       toast.error('Failed to load products');
-      console.error(error);
+   
     } finally {
       setIsLoading(false);
     }
@@ -109,7 +109,7 @@ export default function ProductsManagementPage() {
       const data = await getCategories(token!);
       setCategories(data);
     } catch (error) {
-      console.error('Failed to load categories:', error);
+   
     }
   };
 
@@ -118,7 +118,7 @@ export default function ProductsManagementPage() {
       const data = await getProductSizes(token!);
       setSizes(data);
     } catch (error) {
-      console.error('Failed to load sizes:', error);
+   
     }
   };
 
@@ -127,7 +127,7 @@ export default function ProductsManagementPage() {
       const data = await getProductVariants(token!, productId);
       setVariants(data);
     } catch (error) {
-      console.error('Failed to load variants:', error);
+   
     }
   };
 
@@ -199,7 +199,7 @@ export default function ProductsManagementPage() {
       setProductVariants(variantsData);
       setShowProductVariantsSection(variantsData.length > 0);
     } catch (error) {
-      console.error('Failed to load variants:', error);
+   
       setProductVariants([]);
     }
     setShowModal(true);
@@ -264,7 +264,7 @@ export default function ProductsManagementPage() {
               await createProductVariant(token!, createdProduct.id, variant);
               variantsCreated++;
             } catch (error: any) {
-              console.error('Failed to create variant:', error);
+           
               toast.error(`Failed to create variant: ${error.message}`);
             }
           }
@@ -295,7 +295,7 @@ export default function ProductsManagementPage() {
             await uploadProductImage(token!, createdProduct.id, selectedImages[i], i === 0);
             uploadedCount++;
           } catch (error: any) {
-            console.error('Failed to upload image:', error);
+         
             failedCount++;
             toast.error(`Failed to upload image ${i + 1}: ${error.message}`);
           }

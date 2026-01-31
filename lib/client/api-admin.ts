@@ -32,7 +32,7 @@ function getAuthHeaders(token: string): HeadersInit {
     ...getHeaders(),
     'Authorization': `Bearer ${token}`
   };
-  console.log('🔑 Auth Headers:', { ...headers, Authorization: 'Bearer ***' });
+ 
   return headers;
 }
 
@@ -40,20 +40,20 @@ function getAuthHeaders(token: string): HeadersInit {
 async function handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
   const contentType = response.headers.get('content-type');
   
-  console.log('📤 API Response Status:', response.status, response.url);
+ 
   
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
-    console.error('❌ API Error: Non-JSON response', contentType, text.substring(0, 200));
+   
     throw new Error(`Expected JSON but got ${contentType}. Response: ${text.substring(0, 200)}`);
   }
 
   const data = await response.json();
-  console.log('📥 API Response Data:', data);
+ 
 
   if (!response.ok) {
     const error = data as ApiErrorResponse;
-    console.error('❌ API Error:', error);
+   
     throw new Error(error.message || error.error || 'An error occurred');
   }
 
@@ -85,7 +85,7 @@ async function handleFormDataResponse<T>(response: Response): Promise<ApiRespons
  * Login as admin
  */
 export async function adminLogin(email: string, password: string): Promise<AdminLoginResponse> {
-  console.log('🔐 Admin Login Request:', { email, password: '***' });
+ 
   
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: 'POST',
@@ -99,21 +99,21 @@ export async function adminLogin(email: string, password: string): Promise<Admin
   
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
-    console.error('❌ Non-JSON response:', text.substring(0, 200));
+   
     throw new Error(`Expected JSON but got ${contentType}`);
   }
 
   const json = await response.json();
-  console.log('📥 Raw Response:', json);
+ 
 
   if (!response.ok) {
-    console.error('❌ API Error:', json);
+   
     throw new Error(json.message || json.error || 'Login failed');
   }
 
   // Return data directly if it's already the response, or extract from .data
   const data = (json as any).data || json;
-  console.log('✅ Admin Login Success:', data);
+ 
   return data as AdminLoginResponse;
 }
 
@@ -121,7 +121,7 @@ export async function adminLogin(email: string, password: string): Promise<Admin
  * Setup 2FA
  */
 export async function setupTwoFactor(token: string): Promise<TwoFactorSetupResponse> {
-  console.log('🔐 Setup 2FA Request');
+ 
   const response = await fetch(`${API_BASE_URL}/auth/2fa/setup`, {
     method: 'POST',
     headers: getAuthHeaders(token),
@@ -129,7 +129,7 @@ export async function setupTwoFactor(token: string): Promise<TwoFactorSetupRespo
   });
 
   const result = await handleResponse<TwoFactorSetupResponse>(response);
-  console.log('✅ 2FA Setup Success:', result.data);
+ 
   return result.data;
 }
 
@@ -137,7 +137,7 @@ export async function setupTwoFactor(token: string): Promise<TwoFactorSetupRespo
  * Verify 2FA code
  */
 export async function verifyTwoFactor(code: string, token?: string): Promise<TwoFactorVerifyResponse> {
-  console.log('🔐 Verify 2FA Request');
+ 
   
   const headers = token ? getAuthHeaders(token) : getHeaders();
   
@@ -153,21 +153,21 @@ export async function verifyTwoFactor(code: string, token?: string): Promise<Two
   
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
-    console.error('❌ Non-JSON response:', text.substring(0, 200));
+   
     throw new Error(`Expected JSON but got ${contentType}`);
   }
 
   const json = await response.json();
-  console.log('📥 2FA Verify Raw Response:', json);
+ 
 
   if (!response.ok) {
-    console.error('❌ 2FA Verify Error:', json);
+   
     throw new Error(json.message || json.error || 'Verification failed');
   }
 
   // Return data directly if it's already response, or extract from .data
   const data = (json as any).data || json;
-  console.log('✅ 2FA Verify Success:', data);
+ 
   return data as TwoFactorVerifyResponse;
 }
 
@@ -177,7 +177,7 @@ export async function verifyTwoFactor(code: string, token?: string): Promise<Two
  * Get all users
  */
 export async function getUsers(token: string): Promise<AdminUser[]> {
-  console.log('👥 Get Users Request');
+ 
   const response = await fetch(`${API_BASE_URL}/users`, {
     method: 'GET',
     headers: getAuthHeaders(token),
@@ -431,13 +431,8 @@ export async function uploadProductImage(
   formData.append('image', imageFile);
   formData.append('isPrimary', isPrimary ? 'true' : 'false');
 
-  console.log('📤 Uploading image:', {
-    productId,
-    fileName: imageFile.name,
-    fileSize: imageFile.size,
-    fileType: imageFile.type,
-    isPrimary
-  });
+ 
+ 
 
   const response = await fetch(`${API_BASE_URL}/products/${productId}/images`, {
     method: 'POST',
@@ -817,7 +812,7 @@ export async function getDashboardStats(token: string): Promise<{
   pendingOrders: number;
   recentOrders: Order[];
 }> {
-  console.log('📊 Get Dashboard Stats Request');
+ 
   const response = await fetch(`${API_BASE_URL}/analytics/dashboard`, {
     method: 'GET',
     headers: getAuthHeaders(token),

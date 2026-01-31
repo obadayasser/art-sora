@@ -47,7 +47,7 @@ export default function AdminDashboardPage() {
         recentOrders: ordersData.data
       });
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
+    
     } finally {
       setIsLoading(false);
     }
