@@ -70,7 +70,7 @@ export function getAppId(): string {
 }
 
 // Helper function to generate Device ID
-export function getDeviceId(): string {
+/* export function getDeviceId(): string {
   if (typeof window !== 'undefined') {
     try {
       const deviceId = localStorage.getItem('device_id');
@@ -86,7 +86,7 @@ export function getDeviceId(): string {
     }
   }
   return '';
-}
+} */
 
 // Helper function to get Device Fingerprint
 export function getDeviceFingerprint(): string {
@@ -111,7 +111,7 @@ export function getHeaders(): HeadersInit {
   return {
     'Content-Type': 'application/json',
     'X-App-ID': getAppId(),
-    'X-Device-ID': getDeviceId()
+   /*  'X-Device-ID': getDeviceId() */
   };
 }
 
@@ -119,10 +119,9 @@ export function getHeaders(): HeadersInit {
 let isDeviceVerified = false;
 let verificationPromise: Promise<{ success: boolean; deviceId?: number; isTrusted?: boolean }> | null = null;
 
-// Function to verify device with the API
-export async function verifyDevice(): Promise<{ success: boolean; deviceId?: number; isTrusted?: boolean }> {
-  // Prevent multiple simultaneous verifications
-  if (verificationPromise) {
+ 
+/* export async function verifyDevice(): Promise<{ success: boolean; deviceId?: number; isTrusted?: boolean }> {
+   if (verificationPromise) {
     await verificationPromise;
   }
 
@@ -139,18 +138,15 @@ export async function verifyDevice(): Promise<{ success: boolean; deviceId?: num
         headers: {
           'Content-Type': 'application/json',
           'X-App-ID': getAppId(),
-          'X-Device-ID': getDeviceId()
-        },
+         },
         body: JSON.stringify({
           userAgent: getUserAgent(),
           fingerprint: getDeviceFingerprint()
         }),
-        // Don't follow redirects automatically
-        redirect: 'manual'
+         redirect: 'manual'
       });
 
-      // Handle 3xx redirects
-      if (response.type === 'opaqueredirect' || response.status >= 300 && response.status < 400) {
+       if (response.type === 'opaqueredirect' || response.status >= 300 && response.status < 400) {
         isDeviceVerified = true;
         return { success: true, isTrusted: true };
       }
@@ -180,13 +176,12 @@ export async function verifyDevice(): Promise<{ success: boolean; deviceId?: num
   })();
 
   return verificationPromise;
-}
+} */
 
 // Initialize device verification (call this once on app load)
-export function initializeDevice() {
-  // Verify device in the background without blocking
-  verifyDevice().catch(err => {
+/* export function initializeDevice() {
+   verifyDevice().catch(err => {
     console.warn('Device verification failed:', err);
   });
-}
+} */
 

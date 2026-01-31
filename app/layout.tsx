@@ -4,8 +4,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { LanguageProvider } from "@/components/providers/LanguageProvider";
-import { DeviceProvider } from "@/components/providers/DeviceProvider";
-import { CartProvider } from "@/contexts/CartContext";
+ import { CartProvider } from "@/contexts/CartContext";
 import { AdminAuthProvider } from "@/contexts/AdminAuthContext";
 import { CartSidebar } from "@/components/ui/CartSidebar";
 import "./globals.css";
@@ -38,7 +37,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <NextIntlClientProvider messages={messages}>
             <LanguageProvider>
-              <DeviceProvider>
+ 
                 <AdminAuthProvider>
                   <CartProvider>
                     <Toaster
@@ -55,7 +54,7 @@ export default async function RootLayout({
                     <main>{children}</main>
                   </CartProvider>
                 </AdminAuthProvider>
-              </DeviceProvider>
+         
             </LanguageProvider>
           </NextIntlClientProvider>
         </ThemeProvider>

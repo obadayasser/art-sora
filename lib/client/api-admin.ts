@@ -1,6 +1,6 @@
 'use client';
 
-import { getAppId, getDeviceId, getHeaders } from './api-client';
+import { getAppId, getHeaders } from './api-client';
 import type {
   ApiResponse,
   AdminUser,
@@ -439,7 +439,7 @@ export async function uploadProductImage(
     headers: {
       'Authorization': `Bearer ${token}`,
       'X-App-ID': getAppId(),
-      'X-Device-ID': getDeviceId()
+/*       'X-Device-ID': getDeviceId() */
     },
     body: formData
   });
@@ -466,7 +466,7 @@ export async function uploadProductImagesBatch(
     headers: {
       'Authorization': `Bearer ${token}`,
       'X-App-ID': getAppId(),
-      'X-Device-ID': getDeviceId()
+ /*      'X-Device-ID': getDeviceId() */
     },
     body: formData
   });

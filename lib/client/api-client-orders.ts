@@ -1,6 +1,6 @@
 'use client';
 
-import { getAppId, getDeviceId, getHeaders } from './api-client';
+import { getAppId, getHeaders } from './api-client';
 import type {
   ApiResponse,
   Product,
