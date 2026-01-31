@@ -32,28 +32,28 @@ function getAuthHeaders(token: string): HeadersInit {
     ...getHeaders(),
     'Authorization': `Bearer ${token}`
   };
- 
+
   return headers;
 }
 
 // Helper function to handle API response
 async function handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
   const contentType = response.headers.get('content-type');
-  
- 
-  
+
+
+
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
-   
+
     throw new Error(`Expected JSON but got ${contentType}. Response: ${text.substring(0, 200)}`);
   }
 
   const data = await response.json();
- 
+
 
   if (!response.ok) {
     const error = data as ApiErrorResponse;
-   
+
     throw new Error(error.message || error.error || 'An error occurred');
   }
 
@@ -63,7 +63,7 @@ async function handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
 // Helper function to handle FormData response
 async function handleFormDataResponse<T>(response: Response): Promise<ApiResponse<T>> {
   const contentType = response.headers.get('content-type');
-  
+
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
     throw new Error(`Expected JSON but got ${contentType}. Response: ${text.substring(0, 200)}`);
@@ -85,8 +85,8 @@ async function handleFormDataResponse<T>(response: Response): Promise<ApiRespons
  * Login as admin
  */
 export async function adminLogin(email: string, password: string): Promise<AdminLoginResponse> {
- 
-  
+
+
   const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: 'POST',
     headers: getHeaders(),
@@ -96,24 +96,24 @@ export async function adminLogin(email: string, password: string): Promise<Admin
 
   // Handle the response - check if it's wrapped in ApiResponse or direct
   const contentType = response.headers.get('content-type');
-  
+
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
-   
+
     throw new Error(`Expected JSON but got ${contentType}`);
   }
 
   const json = await response.json();
- 
+
 
   if (!response.ok) {
-   
+
     throw new Error(json.message || json.error || 'Login failed');
   }
 
   // Return data directly if it's already the response, or extract from .data
   const data = (json as any).data || json;
- 
+
   return data as AdminLoginResponse;
 }
 
@@ -121,7 +121,7 @@ export async function adminLogin(email: string, password: string): Promise<Admin
  * Setup 2FA
  */
 export async function setupTwoFactor(token: string): Promise<TwoFactorSetupResponse> {
- 
+
   const response = await fetch(`${API_BASE_URL}/auth/2fa/setup`, {
     method: 'POST',
     headers: getAuthHeaders(token),
@@ -129,7 +129,7 @@ export async function setupTwoFactor(token: string): Promise<TwoFactorSetupRespo
   });
 
   const result = await handleResponse<TwoFactorSetupResponse>(response);
- 
+
   return result.data;
 }
 
@@ -137,10 +137,10 @@ export async function setupTwoFactor(token: string): Promise<TwoFactorSetupRespo
  * Verify 2FA code
  */
 export async function verifyTwoFactor(code: string, token?: string): Promise<TwoFactorVerifyResponse> {
- 
-  
+
+
   const headers = token ? getAuthHeaders(token) : getHeaders();
-  
+
   const response = await fetch(`${API_BASE_URL}/auth/2fa/verify`, {
     method: 'POST',
     headers,
@@ -150,24 +150,24 @@ export async function verifyTwoFactor(code: string, token?: string): Promise<Two
 
   // Handle response - check if it's wrapped in ApiResponse or direct
   const contentType = response.headers.get('content-type');
-  
+
   if (!contentType || !contentType.includes('application/json')) {
     const text = await response.text();
-   
+
     throw new Error(`Expected JSON but got ${contentType}`);
   }
 
   const json = await response.json();
- 
+
 
   if (!response.ok) {
-   
+
     throw new Error(json.message || json.error || 'Verification failed');
   }
 
   // Return data directly if it's already response, or extract from .data
   const data = (json as any).data || json;
- 
+
   return data as TwoFactorVerifyResponse;
 }
 
@@ -177,7 +177,7 @@ export async function verifyTwoFactor(code: string, token?: string): Promise<Two
  * Get all users
  */
 export async function getUsers(token: string): Promise<AdminUser[]> {
- 
+
   const response = await fetch(`${API_BASE_URL}/users`, {
     method: 'GET',
     headers: getAuthHeaders(token),
@@ -431,8 +431,8 @@ export async function uploadProductImage(
   formData.append('image', imageFile);
   formData.append('isPrimary', isPrimary ? 'true' : 'false');
 
- 
- 
+
+
 
   const response = await fetch(`${API_BASE_URL}/products/${productId}/images`, {
     method: 'POST',
@@ -465,8 +465,8 @@ export async function uploadProductImagesBatch(
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,
-       'X-App-ID': getAppId(),
-    'X-Device-ID': getDeviceId()
+      'X-App-ID': getAppId(),
+      'X-Device-ID': getDeviceId()
     },
     body: formData
   });
@@ -738,6 +738,18 @@ export async function updateOrderStatus(
   const result = await handleResponse<Order>(response);
   return result.data;
 }
+/* delete   */
+export async function deleteOrder(token: string, id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/orders/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(token),
+    credentials: 'include'
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Failed to delete order');
+  }
+}
 
 // ==================== REVIEWS & ANALYTICS ====================
 
@@ -812,7 +824,7 @@ export async function getDashboardStats(token: string): Promise<{
   pendingOrders: number;
   recentOrders: Order[];
 }> {
- 
+
   const response = await fetch(`${API_BASE_URL}/analytics/dashboard`, {
     method: 'GET',
     headers: getAuthHeaders(token),

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
-import { getOrders, getOrderById, updateOrderStatus } from '@/lib/client/api-admin';
+import { getOrders, getOrderById, updateOrderStatus, deleteOrder } from '@/lib/client/api-admin';
 import {
   Search,
   Filter,
@@ -40,6 +40,8 @@ export default function OrdersManagementPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState<any>(null);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const statusOptions: ProductStatus[] = [
     'PENDING',
@@ -129,6 +131,28 @@ export default function OrdersManagementPage() {
       toast.error(error.message || 'Failed to update status');
     } finally {
       setIsUpdatingStatus(false);
+    }
+  };
+
+  const handleDeleteOrder = (order: Order) => {
+    setSelectedOrder(order);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteOrder = async () => {
+    if (!selectedOrder) return;
+
+    try {
+      setIsDeleting(true);
+      await deleteOrder(token!, selectedOrder.id);
+      toast.success('Order deleted successfully');
+      setShowDeleteModal(false);
+      setShowViewModal(false);
+      loadOrders();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to delete order');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -258,12 +282,21 @@ export default function OrdersManagementPage() {
                         {new Date(order.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <button
-                          onClick={() => handleViewOrder(order)}
-                          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors"
-                        >
-                          <Eye size={18} className="text-gray-500 dark:text-gray-400" />
-                        </button>
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => handleViewOrder(order)}
+                            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                          >
+                            <Eye size={18} className="text-gray-500 dark:text-gray-400" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteOrder(order)}
+                            className="p-2 hover:bg-red-100 dark:hover:bg-red-900 rounded-lg transition-colors"
+                            title="Delete order"
+                          >
+                            <XCircle size={18} className="text-red-500 dark:text-red-400" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -532,8 +565,56 @@ export default function OrdersManagementPage() {
                 <button
                   onClick={confirmUpdateStatus}
                   disabled={isUpdatingStatus}
+
                   className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
                 >
+                  {/* Delete Order Modal */}
+                  {showDeleteModal && selectedOrder && (
+                    <div className="fixed inset-0 bg-black/70 bg-opacity-50 z-50 flex items-center justify-center p-4">
+                      <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full">
+                        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                            Delete Order
+                          </h2>
+                        </div>
+                        <div className="p-6 space-y-4">
+                          <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+                            <p className="text-sm text-red-800 dark:text-red-200 font-medium mb-2">
+                              Are you sure you want to delete this order?
+                            </p>
+                            <p className="text-xs text-red-600 dark:text-red-400">
+                              Order #{selectedOrder.orderNumber}
+                            </p>
+                            <p className="text-xs text-red-600 dark:text-red-400">
+                              Customer: {selectedOrder.customerName}
+                            </p>
+                            <p className="text-xs text-red-600 dark:text-red-400">
+                              Total: ${selectedOrder.totalAmount}
+                            </p>
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            This action cannot be undone. The order will be permanently deleted.
+                          </p>
+                          <div className="flex gap-3 pt-4">
+                            <button
+                              onClick={() => setShowDeleteModal(false)}
+                              disabled={isDeleting}
+                              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              onClick={confirmDeleteOrder}
+                              disabled={isDeleting}
+                              className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                            >
+                              {isDeleting ? <Loader2 className="animate-spin mx-auto" size={20} /> : 'Delete Order'}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   {isUpdatingStatus ? <Loader2 className="animate-spin mx-auto" size={20} /> : 'Update Status'}
                 </button>
               </div>
