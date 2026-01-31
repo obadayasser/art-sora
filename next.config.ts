@@ -18,6 +18,12 @@ const nextConfig: NextConfig = {
                 pathname: "/**",
             },
             {
+                protocol: "http",
+                hostname: "76.13.135.206",
+                port: "5000",
+                pathname: "/**",
+            },
+            {
                 protocol: "https",
                 hostname: "images.unsplash.com",
                 pathname: "/**",
