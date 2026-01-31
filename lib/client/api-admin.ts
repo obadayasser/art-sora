@@ -740,7 +740,7 @@ export async function updateOrderStatus(
 }
 /* delete   */
 export async function deleteOrder(token: string, id: number): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/orders/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/orders/${id}/delete`, {
     method: 'DELETE',
     headers: getAuthHeaders(token),
     credentials: 'include'
