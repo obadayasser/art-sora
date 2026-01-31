@@ -305,12 +305,7 @@ export default function ProductDetailPage() {
               )}
               <div className="flex items-center gap-2 mt-2 text-sm text-[var(--foreground)]/60">
                 {selectedVariant?.stockQuantity !== undefined ? (
-                  <span className={selectedVariant.stockQuantity > 0 ? 'text-green-500' : 'text-red-500'}>
-                    {selectedVariant.stockQuantity > 0
-                      ? `Available (${selectedVariant.stockQuantity})`
-                      : 'غير Available'
-                    }
-                  </span>
+                <></>
                 ) : (
                   <span className={product.stockQuantity > 0 ? 'text-green-500' : 'text-red-500'}>
                     {product.stockQuantity > 0

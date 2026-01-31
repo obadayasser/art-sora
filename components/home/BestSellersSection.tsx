@@ -250,7 +250,7 @@ export function BestSellersSection() {
 
 // Separate Product Card Component for reusability
 function ProductCard({ product, addToCart, isMobile }: {
-    product: Product;
+    product: Product & { displayPrice?: string; originalPrice?: string; hasDiscount?: boolean };
     addToCart: (product: Product) => void;
     isMobile: boolean;
 }) {
@@ -260,8 +260,10 @@ function ProductCard({ product, addToCart, isMobile }: {
     const defaultVariant = product.variants?.find(v => v.isDefault) || product.variants?.[0];
     const hasVariants = product.variants && product.variants.length > 0;
 
-    const displayPrice = defaultVariant?.salePrice || defaultVariant?.basePrice || product.salePrice || product.basePrice;
-    const displayBasePrice = defaultVariant?.basePrice || product.basePrice;
+    // Use pre-calculated prices from parent component or calculate from variants
+    const displayPrice = product.displayPrice || defaultVariant?.salePrice || defaultVariant?.basePrice || product.salePrice || product.basePrice;
+    const displayBasePrice = product.originalPrice || defaultVariant?.basePrice || product.basePrice;
+    const hasDiscount = product.hasDiscount ?? !!product.salePrice;
     const displayStock = defaultVariant?.stockQuantity !== undefined ? defaultVariant.stockQuantity : product.stockQuantity;
     const displaySizes = hasVariants ? product.variants!.map(v => v.sizeDimensions).join(', ') : null;
 
@@ -356,12 +358,7 @@ function ProductCard({ product, addToCart, isMobile }: {
                         </div>
                     )}
 
-                    {/* Stock Indicator */}
-                    {displayStock !== undefined && (
-                        <div className={`text-xs mt-1 ${displayStock > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                            {displayStock > 0 ? `Available (${displayStock})` : 'غير Available'}
-                        </div>
-                    )}
+               
                 </div>
             </div>
         </div>
