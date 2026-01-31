@@ -35,6 +35,19 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+    async headers() {
+        return [
+            {
+                source: '/:path*',
+                headers: [
+                    {
+                        key: 'Content-Security-Policy',
+                        value: "connect-src 'self' https: http: ws: wss:; media-src 'self' blob: https:; default-src 'self' 'unsafe-inline' 'unsafe-eval' https: http: ws: wss: data: blob:;",
+                    },
+                ],
+            },
+        ];
+    },
 };
 
 export default withNextIntl(nextConfig);

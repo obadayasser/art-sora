@@ -146,7 +146,7 @@ const displaySizes = hasVariants ? product.variants!.map(v => v.sizeDimensions).
 
 ## 🐛 Known Issues
 
-- Ensure API_BASE_URL is correct (http://localhost:5000)
+- Ensure API_BASE_URL is correct (http://76.13.135.206:5000)
 - Check that variants are loaded before displaying
 - Handle cases where product has no variants
 - Validate that variant stock is respected

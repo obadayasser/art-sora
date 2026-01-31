@@ -258,7 +258,7 @@ PAYMOP_WEBHOOK_URL=https://yourdomain.com/api/v1/payments/webhook
 
 ### محاكاة webhook ناجح:
 ```bash
-curl -X POST http://localhost:5000/api/v1/payments/webhook \
+curl -X POST http://76.13.135.206:5000/api/v1/payments/webhook \
   -H "Content-Type: application/json" \
   -d '{
     "transactionId": "TXN1234567890",

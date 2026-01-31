@@ -28,6 +28,8 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
+        <meta name="disable-local-network" content="true" />
+        <meta httpEquiv="Content-Security-Policy" content="connect-src 'self' https: http: ws: wss:;" />
         <link
           href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&family=Montserrat:wght@400;500;700&display=swap"
           rel="stylesheet"
