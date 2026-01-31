@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { getProductBySlug, getProductReviews } from '@/lib/client/api';
 import {  getProductVariants, getProductSizes } from '@/lib/client/api-client-orders';
 import { Product, ProductVariant, ProductSize } from '@/types';
+import { toast } from 'sonner';
 
 export default function ProductDetailPage() {
   const t = useTranslations();
@@ -63,6 +64,38 @@ export default function ProductDetailPage() {
     if (product) {
       for (let i = 0; i < quantity; i++) {
         addToCart(product);
+      }
+    }
+  };
+
+  const handleShareProduct = async () => {
+    const productUrl = typeof window !== 'undefined' ? window.location.href : '';
+
+    // Copy URL to clipboard
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(productUrl);
+
+        // Show success message
+        if (typeof window !== 'undefined' && (window as any).alert) {
+          toast.success('تم نسخ رابط المنتج! ✓\nProduct link copied!');
+        }
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    }
+
+    // Open native share dialog (mobile)
+    if (navigator.share && product) {
+      try {
+        await navigator.share({
+          title: product.nameAr || product.nameEn,
+          text: `شاهد هذا المنتج الرائع! 🎨\nCheck out this amazing product!`,
+          url: productUrl
+        });
+      } catch (err) {
+        // Share was cancelled or not supported
+        console.log('Share dialog cancelled or not supported');
       }
     }
   };
@@ -145,6 +178,7 @@ export default function ProductDetailPage() {
                   alt={product.nameAr}
                   fill
                   className="object-cover"
+                  unoptimized
                 />
                 {product.salePrice && (
                   <div className="absolute top-4 right-4 bg-gradient-to-r from-[#DA5280] to-[#E879A0] text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
@@ -250,10 +284,10 @@ export default function ProductDetailPage() {
             <div className="mb-8">
               {selectedVariant?.salePrice ? (
                 <div className="flex items-center gap-4">
-                  <span className="text-4xl font-bold text-[#DA5280]">
+                  <span className="lg:text-4xl text-2xl font-bold text-[#DA5280]">
                     LE {parseFloat(selectedVariant.salePrice).toFixed(2)}
                   </span>
-                  <span className="text-xl text-[var(--foreground)]/60 line-through">
+                  <span className="lg:text-xl text-[var(--foreground)]/60 line-through">
                     LE {parseFloat(selectedVariant.basePrice).toFixed(2)}
                   </span>
                   <span className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
@@ -322,15 +356,17 @@ export default function ProductDetailPage() {
               <button
                 onClick={handleAddToCart}
                 /*      disabled={product.stockQuantity === 0} */
-                className="flex-1 py-4 bg-gradient-to-r from-[#DA5280] to-[#AAD7F3] text-white rounded-xl font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg"
+                className="flex-1 py-4 bg-gradient-to-r from-[#DA5280] to-[#DA5280] text-white rounded-xl font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg"
               >
                 <ShoppingCart className="w-5 h-5" />
                 {t('product.addToCart') || 'Add to Card'}
               </button>
-              <button className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--foreground)] hover:text-red-500 transition-colors">
-                <Heart className="w-5 h-5" />
-              </button>
-              <button className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--foreground)] hover:text-[var(--color)] transition-colors">
+
+              <button
+                onClick={handleShareProduct}
+                className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--foreground)] hover:text-[var(--color)] hover:bg-[var(--card-bg)]/80 transition-colors"
+                title="مشاركة / Share"
+              >
                 <Share2 className="w-5 h-5" />
               </button>
             </div>
