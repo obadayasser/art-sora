@@ -9,6 +9,47 @@ function generateUUID(): string {
   });
 }
 
+// Helper function to generate device fingerprint
+function generateFingerprint(): string {
+  if (typeof window === 'undefined') return '';
+
+  try {
+    // Create a fingerprint based on available browser features
+    const nav = navigator as any;
+    const screen = window.screen;
+    
+    const components = [
+      nav.userAgent,
+      nav.language,
+      screen.colorDepth,
+      screen.width + 'x' + screen.height,
+      new Date().getTimezoneOffset(),
+      nav.hardwareConcurrency || 1,
+      nav.deviceMemory || 4,
+    ].join('|');
+
+    // Create a simple hash from the components
+    let hash = 0;
+    for (let i = 0; i < components.length; i++) {
+      const char = components.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    
+    return Math.abs(hash).toString(16);
+  } catch (error) {
+    return generateUUID();
+  }
+}
+
+// Helper function to get User Agent
+export function getUserAgent(): string {
+  if (typeof window !== 'undefined') {
+    return navigator.userAgent;
+  }
+  return '';
+}
+
 // Helper function to get App ID (runs on client side)
 export function getAppId(): string {
   if (typeof window !== 'undefined') {
@@ -47,6 +88,24 @@ export function getDeviceId(): string {
   return '';
 }
 
+// Helper function to get Device Fingerprint
+export function getDeviceFingerprint(): string {
+  if (typeof window !== 'undefined') {
+    try {
+      const fingerprint = localStorage.getItem('device_fingerprint');
+      if (!fingerprint) {
+        const newFingerprint = generateFingerprint();
+        localStorage.setItem('device_fingerprint', newFingerprint);
+        return newFingerprint;
+      }
+      return fingerprint;
+    } catch (error) {
+      return generateFingerprint();
+    }
+  }
+  return '';
+}
+
 // Helper function to get headers
 export function getHeaders(): HeadersInit {
   return {
@@ -54,5 +113,80 @@ export function getHeaders(): HeadersInit {
     'X-App-ID': getAppId(),
     'X-Device-ID': getDeviceId()
   };
+}
+
+// Store verified device ID
+let isDeviceVerified = false;
+let verificationPromise: Promise<boolean> | null = null;
+
+// Function to verify device with the API
+export async function verifyDevice(): Promise<{ success: boolean; deviceId?: number; isTrusted?: boolean }> {
+  // Prevent multiple simultaneous verifications
+  if (verificationPromise) {
+    await verificationPromise;
+  }
+
+  if (isDeviceVerified) {
+    return { success: true, isTrusted: true };
+  }
+
+  verificationPromise = (async () => {
+    try {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://76.13.135.206:5000/api/v1';
+      
+      const response = await fetch(`${API_BASE_URL}/auth/verify-device`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-App-ID': getAppId(),
+          'X-Device-ID': getDeviceId()
+        },
+        body: JSON.stringify({
+          userAgent: getUserAgent(),
+          fingerprint: getDeviceFingerprint()
+        }),
+        // Don't follow redirects automatically
+        redirect: 'manual'
+      });
+
+      // Handle 3xx redirects
+      if (response.type === 'opaqueredirect' || response.status >= 300 && response.status < 400) {
+        isDeviceVerified = true;
+        return { success: true, isTrusted: true };
+      }
+
+      if (response.ok) {
+        const data = await response.json();
+        isDeviceVerified = true;
+        return {
+          success: true,
+          deviceId: data.data?.deviceId,
+          isTrusted: data.data?.isTrusted
+        };
+      }
+
+      // If verification fails, still mark as verified to avoid blocking the app
+      // The app should work even if device verification fails
+      isDeviceVerified = true;
+      return { success: false };
+    } catch (error) {
+      // On any error, still allow the app to function
+      // Device verification is optional for basic functionality
+      isDeviceVerified = true;
+      return { success: false };
+    } finally {
+      verificationPromise = null;
+    }
+  })();
+
+  return verificationPromise;
+}
+
+// Initialize device verification (call this once on app load)
+export function initializeDevice() {
+  // Verify device in the background without blocking
+  verifyDevice().catch(err => {
+    console.warn('Device verification failed:', err);
+  });
 }
 
