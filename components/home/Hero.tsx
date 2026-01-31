@@ -8,17 +8,17 @@ import * as THREE from "three";
 
 // قائمة بأسماء الصور (بدون مسارات)
 const FRAME_IMAGES = [
-  "player1.webp",
-  "frame_47.webp",
+  "1.jpeg",
+  "2.jpeg",
+  "3.jpeg",
+  "4.jpeg",
+  "5.jpeg",
+  "6.jpeg",
+  "7.jpeg",
+  "8.jpeg",
+  "12.jpeg",
   "frame_1c1dbc24-918f-419e-beac-6f2f8e98f561.webp",
-  "frame_39_004f4584-e849-45e8-96a3-42095e70fd06.webp",
-  "frame_32_585e7ebd-cb9b-446f-bd2e-8dd47f392570.webp",
-  "frame_47.webp",
-  "player1.jpg",
-  "39_20.webp",
-  "framex_5.webp",
-  "framex_8.webp"
-];
+  ];
 
 // مكون الإطار مع صورة اللاعب
 function FrameCard({ position, rotation, delay, imageIndex, direction }: any) {
