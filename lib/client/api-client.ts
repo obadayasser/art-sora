@@ -117,7 +117,7 @@ export function getHeaders(): HeadersInit {
 
 // Store verified device ID
 let isDeviceVerified = false;
-let verificationPromise: Promise<boolean> | null = null;
+let verificationPromise: Promise<{ success: boolean; deviceId?: number; isTrusted?: boolean }> | null = null;
 
 // Function to verify device with the API
 export async function verifyDevice(): Promise<{ success: boolean; deviceId?: number; isTrusted?: boolean }> {
