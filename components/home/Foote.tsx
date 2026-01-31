@@ -3,8 +3,8 @@ import { useTranslations } from 'next-intl';
 
 export default function Footer() {
   const t = useTranslations('footer');
-  const phoneNumber = '01093518834';
-  const whatsappNumber = '01093518834';
+  const phoneNumber = '01214261720';
+  const whatsappNumber = '01214261720';
 
   return (
     <footer className="bg-gray-900 text-white py-12">

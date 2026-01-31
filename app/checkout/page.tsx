@@ -37,7 +37,7 @@ interface FormData {
   city: string;
   addressLine1: string;
   addressLine2: string;
-  paymentMethod: 'CASH' | 'VODAFONE_CASH' | 'INSTAPAY' | 'PAYMOP';
+  paymentMethod: 'CASH' | 'VODAFONE_CASH' | 'INSTAPAY' /* | 'PAYMOP' */;
   discountCode: string;
 }
 
@@ -691,7 +691,7 @@ export default function CheckoutPage() {
                     </label>
 
                     {/* PayMOP */}
-                    <label
+             {/*        <label
                       className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
                         formData.paymentMethod === 'PAYMOP'
                           ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
@@ -720,7 +720,7 @@ export default function CheckoutPage() {
                         </div>
                         <CreditCard size={24} className="text-purple-500" />
                       </div>
-                    </label>
+                    </label> */}
                   </div>
 
                   {/* Payment Instructions */}
@@ -762,7 +762,7 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  {formData.paymentMethod === 'PAYMOP' && (
+                 {/*  {formData.paymentMethod === 'PAYMOP' && (
                     <div className="mt-4 p-4 bg-pink-50 dark:bg-pink-900/20 rounded-lg">
                       <div className="flex items-start">
                         <CreditCard size={16} className="text-pink-600 dark:text-pink-400 mr-2 mt-0.5 flex-shrink-0" />
@@ -773,7 +773,7 @@ export default function CheckoutPage() {
                         </div>
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </form>
             </motion.div>

@@ -180,7 +180,7 @@ export default function OrderConfirmationPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* WhatsApp */}
             <a
-              href="https://wa.me/201093518834"
+              href="https://wa.me/201214261720"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center p-6 bg-gradient-to-r from-green-500 to-green-600 rounded-xl hover:opacity-90 transition-all shadow-lg group"
@@ -199,7 +199,7 @@ export default function OrderConfirmationPage() {
 
             {/* Phone */}
             <a
-              href="tel:+201093518834"
+              href="tel:+201214261720"
               className="flex items-center p-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl hover:opacity-90 transition-all shadow-lg group"
             >
               <div className="flex-shrink-0 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
