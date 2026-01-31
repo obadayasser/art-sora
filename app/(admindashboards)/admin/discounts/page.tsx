@@ -51,7 +51,7 @@ export default function DiscountsManagementPage() {
     appliesToShipping: false,
     productIds: [] as number[],
     categoryIds: [] as number[],
-    isActive: true
+  /*   isActive: true */
   });
 
   useEffect(() => {
@@ -121,8 +121,8 @@ export default function DiscountsManagementPage() {
       appliesToProducts: true,
       appliesToShipping: false,
       productIds: [],
-      categoryIds: [],
-      isActive: true
+      categoryIds: []/* ,
+      isActive: true */
     });
     setShowModal(true);
   };
@@ -146,7 +146,7 @@ export default function DiscountsManagementPage() {
       appliesToShipping: discount.appliesToShipping,
       productIds: discount.productIds,
       categoryIds: discount.categoryIds,
-      isActive: discount.isActive
+    /*   isActive: discount.isActive */
     });
     setShowModal(true);
     setActionMenuOpen(null);
@@ -615,7 +615,7 @@ export default function DiscountsManagementPage() {
                   Hold Ctrl/Cmd to select multiple categories. Leave empty to apply to all categories.
                 </p>
               </div>
-
+{/* 
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -627,7 +627,7 @@ export default function DiscountsManagementPage() {
                 <label htmlFor="isActive" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
                   Active
                 </label>
-              </div>
+              </div> */}
 
               <div className="flex gap-3 pt-4">
                 <button
