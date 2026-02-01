@@ -28,6 +28,14 @@
   --shimmer-start: #e5e5e5;
   --shimmer-mid: #f5f5f5;
 
+
+
+  /* Toast colors */
+  --toast-bg: #ffffff;
+  --toast-color: #111111;
+  --toast-border: #e5e5e5;
+
+
   --font-ar: 'Cairo', sans-serif;
   --font-en: 'Montserrat', sans-serif;
   --font-weight-normal: 400;
@@ -62,6 +70,14 @@
   /* Shimmer effect */
   --shimmer-start: #2a2a2a;
   --shimmer-mid: #333333;
+
+
+
+  /* Toast colors */
+  --toast-bg: #1a1a1a;
+  --toast-color: #ffffff;
+  --toast-border: #2a2a2a;
+
 }
 
 /* Tailwind v4 theme configuration */
@@ -179,9 +195,9 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 10px;
 }
 
-/* ============================================
+/* ==
    LIVE STREAM ANIMATIONS
-   ============================================ */
+   == */
 
 /* Flying comment animation */
 @keyframes fly-across {

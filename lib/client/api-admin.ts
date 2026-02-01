@@ -24,7 +24,11 @@ import type {
 } from '@/types';
 
 // API Base URL - Update this with your actual API URL
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://76.13.135.206:5000/api/v1';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://76.13.135.206:5000/api/v1';
+
 
 // Helper function to get auth headers
 function getAuthHeaders(token: string): HeadersInit {
@@ -79,7 +83,7 @@ async function handleFormDataResponse<T>(response: Response): Promise<ApiRespons
   return data;
 }
 
-// ==================== AUTHENTICATION ====================
+// ====== AUTHENTICATION ======
 
 /**
  * Login as admin
@@ -171,7 +175,7 @@ export async function verifyTwoFactor(code: string, token?: string): Promise<Two
   return data as TwoFactorVerifyResponse;
 }
 
-// ==================== USERS MANAGEMENT ====================
+// ====== USERS MANAGEMENT ======
 
 /**
  * Get all users
@@ -248,7 +252,7 @@ export async function deleteUser(token: string, id: number): Promise<void> {
   }
 }
 
-// ==================== CATEGORIES MANAGEMENT ====================
+// ====== CATEGORIES MANAGEMENT ======
 
 /**
  * Get all categories
@@ -322,7 +326,7 @@ export async function deleteCategory(token: string, id: number): Promise<void> {
   }
 }
 
-// ==================== PRODUCTS MANAGEMENT ====================
+// ====== PRODUCTS MANAGEMENT ======
 
 /**
  * Get all products
@@ -491,7 +495,7 @@ export async function deleteProductImage(token: string, productId: number, image
   }
 }
 
-// ==================== LOCATIONS MANAGEMENT ====================
+// ====== LOCATIONS MANAGEMENT ======
 
 /**
  * Get all countries
@@ -605,7 +609,7 @@ export async function deleteGovernorate(token: string, id: number): Promise<void
   }
 }
 
-// ==================== DISCOUNT CODES MANAGEMENT ====================
+// ====== DISCOUNT CODES MANAGEMENT ======
 
 /**
  * Get all discount codes
@@ -676,7 +680,7 @@ export async function deleteDiscountCode(token: string, id: number): Promise<voi
   }
 }
 
-// ==================== ORDERS MANAGEMENT ====================
+// ====== ORDERS MANAGEMENT ======
 
 /**
  * Get all orders
@@ -751,7 +755,7 @@ export async function deleteOrder(token: string, id: number): Promise<void> {
   }
 }
 
-// ==================== REVIEWS & ANALYTICS ====================
+// ====== REVIEWS & ANALYTICS ======
 
 /**
  * Get all reviews
@@ -834,7 +838,7 @@ export async function getDashboardStats(token: string): Promise<{
   const result = await handleResponse<any>(response);
   return result.data;
 }
-// ==================== PRODUCT SIZES MANAGEMENT ====================
+// ====== PRODUCT SIZES MANAGEMENT ======
 
 /**
  * Get all product sizes
@@ -892,7 +896,7 @@ export async function deleteProductSize(token: string, id: number): Promise<void
   }
 }
 
-// ==================== PRODUCT VARIANTS MANAGEMENT ====================
+// ====== PRODUCT VARIANTS MANAGEMENT ======
 
 /**
  * Get all product variants
@@ -963,7 +967,7 @@ export async function deleteProductVariant(token: string, productId: number, var
   }
 }
 
-// ==================== REVISIONS MANAGEMENT ====================
+// ====== REVISIONS MANAGEMENT ======
 
 /**
  * Get revisions log

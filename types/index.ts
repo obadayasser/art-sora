@@ -131,7 +131,7 @@ export interface ApiErrorResponse {
   error: string;
 }
 
-// ==================== ADMIN TYPES ====================
+// ====== ADMIN TYPES ======
 
 export interface AdminUser {
   id: number;

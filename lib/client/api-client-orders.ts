@@ -13,7 +13,11 @@ import type {
 } from '@/types';
 
 // API Base URL
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://76.13.135.206:5000/api/v1';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://76.13.135.206:5000/api/v1';
+
 
 // Helper function to handle API response
 async function handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
@@ -39,7 +43,7 @@ async function handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
   return data;
 }
 
-// ==================== CATEGORIES ====================
+// ====== CATEGORIES ======
 
 /**
  * Get all categories
@@ -55,7 +59,7 @@ export async function getPublicCategories(active: boolean = true): Promise<Categ
   return result.data;
 }
 
-// ==================== PRODUCTS ====================
+// ====== PRODUCTS ======
 
 /**
  * Get products with filters
@@ -140,7 +144,7 @@ export async function getProductVariant(productId: number, variantId: number): P
   return result.data;
 }
 
-// ==================== LOCATIONS ====================
+// ====== LOCATIONS ======
 
 /**
  * Get all countries
@@ -193,7 +197,7 @@ export async function getShippingDetails(countryId: number, governorateId: numbe
   return result.data;
 }
 
-// ==================== DISCOUNTS ====================
+// ====== DISCOUNTS ======
 
 interface DiscountValidationResponse {
   isValid: boolean;
@@ -221,7 +225,7 @@ export async function validateDiscountCode(code: string, subtotal: number): Prom
   return result.data;
 }
 
-// ==================== ORDERS ====================
+// ====== ORDERS ======
 
 export interface OrderItemInput {
   productId: number;
@@ -287,7 +291,7 @@ export async function createOrder(orderData: CreateOrderInput): Promise<any> {
   return data;
 }
 
-// ==================== REVIEWS ====================
+// ====== REVIEWS ======
 
 export interface CreateReviewInput {
   productId: number;
@@ -361,7 +365,7 @@ export async function getProductReviews(productId: number, onlyApproved: boolean
   return result.data;
 }
 
-// ==================== ORDER DETAILS ====================
+// ====== ORDER DETAILS ======
 
 /**
  * Get order details by order number
@@ -379,7 +383,7 @@ export async function getOrderDetails(orderNumber: string): Promise<OrderDetail>
   return result.data;
 }
 
-// ==================== ANALYTICS ====================
+// ====== ANALYTICS ======
 
 /**
  * Log product view

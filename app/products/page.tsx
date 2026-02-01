@@ -27,6 +27,11 @@ import { getPublicCategories, getPublicProducts } from '@/lib/client/api-client-
 import toast from 'react-hot-toast';
 import { ShoppingCart, ArrowRight } from 'lucide-react';
 
+
+import { ProductsGridSkeleton } from '@/components/ui/LoadingSpinner';
+import { EmptyState } from '@/components/ui/EmptyState';
+
+
 function ProductsContent() {
   const t = useTranslations();
   const searchParams = useSearchParams();
@@ -381,6 +386,7 @@ function ProductsContent() {
           {/* Products Grid */}
           <div className="flex-1">
             {loading ? (
+
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                   <div
@@ -411,6 +417,23 @@ function ProductsContent() {
                   {t('products.clearFilters') || 'Clear Filters'}
                 </button>
               </div>
+
+              <ProductsGridSkeleton count={8} />
+            ) : products.length === 0 ? (
+              <EmptyState
+                icon={Sparkles}
+                title={t('products.noResults') || 'No Products Found'}
+                description={t('products.noResultsDescription') || 'Try adjusting your filters or search terms to find what you\'re looking for'}
+                action={{
+                  label: t('products.clearFilters') || 'Clear All Filters',
+                  onClick: () => {
+                    setSearchQuery('');
+                    setSelectedCategory(null);
+                    setPriceRange([0, 5000]);
+                  }
+                }}
+              />
+
             ) : (
               <>
                 {/* Products Display */}

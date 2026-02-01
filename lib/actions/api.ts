@@ -2,7 +2,11 @@
 
 import { Category, Product, ApiResponse } from '@/types';
 
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://76.13.135.206:5000/api/v1';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://76.13.135.206:5000/api/v1';
+
 
 // Helper function to get headers for server actions
 function getHeaders(): HeadersInit {
