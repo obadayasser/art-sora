@@ -1,0 +1,364 @@
+@import "tailwindcss";
+
+/* Light mode (default) */
+:root {
+  --background: #ffffff;
+  --foreground: #111111;
+  --color: #1E293B;
+  --secondary-color: #64748B;
+  --card-bg: #f9f9f9;
+  --card-border: #e5e5e5;
+  --muted: #555555;
+  --muted-foreground: #777777;
+  --section-bg: #f5f5f5;
+
+  /* Text colors */
+  --text-primary: #111111;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+
+  /* Message colors */
+  --message-received-bg: #ffffff;
+
+  /* Border and shadow */
+  --border: #e5e5e5;
+  --shadow: rgba(0, 0, 0, 0.1);
+
+  /* Shimmer effect */
+  --shimmer-start: #e5e5e5;
+  --shimmer-mid: #f5f5f5;
+
+  /* Toast colors */
+  --toast-bg: #ffffff;
+  --toast-color: #111111;
+  --toast-border: #e5e5e5;
+
+  --font-ar: 'Cairo', sans-serif;
+  --font-en: 'Montserrat', sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+}
+
+/* Dark mode */
+.dark {
+  --background: #0f0f0f;
+  --foreground: #ffffff;
+  --color: #E2E8F0;
+  --secondary-color: #64748B;
+  --card-bg: #1a1a1a;
+  --card-border: #2a2a2a;
+  --muted: #b0b0b0;
+  --muted-foreground: #888888;
+  --section-bg: #151515;
+
+  /* Text colors */
+  --text-primary: #ffffff;
+  --text-secondary: #aaaaaa;
+  --text-tertiary: #666666;
+
+  /* Message colors */
+  --message-received-bg: #252525;
+
+  /* Border and shadow */
+  --border: #2a2a2a;
+  --shadow: rgba(0, 0, 0, 0.3);
+
+  /* Shimmer effect */
+  --shimmer-start: #2a2a2a;
+  --shimmer-mid: #333333;
+
+  /* Toast colors */
+  --toast-bg: #1a1a1a;
+  --toast-color: #ffffff;
+  --toast-border: #2a2a2a;
+}
+
+/* Tailwind v4 theme configuration */
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--color);
+  --color-secondary: var(--secondary-color);
+  --color-card: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-section: var(--section-bg);
+
+  --font-family-ar: 'Cairo', sans-serif;
+  --font-family-en: 'Montserrat', sans-serif;
+}
+
+* {
+  scroll-behavior: smooth;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* RTL support for Arabic */
+[dir="rtl"] {
+  font-family: var(--font-ar);
+}
+
+[dir="ltr"] {
+  font-family: var(--font-en);
+}
+
+/* Custom Progress Bar Styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 12px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  cursor: default;
+  border: none;
+  box-shadow: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  background: transparent;
+  cursor: default;
+  border: none;
+  box-shadow: none;
+}
+
+.text-primary {
+  color: var(--color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color);
+}
+
+.bg-primary {
+  background-color: var(--color);
+}
+
+.custom-swiper .swiper-pagination-bullet {
+  background: gray;
+  opacity: 0.6;
+}
+
+.custom-swiper .swiper-pagination-bullet-active {
+  background: #DA5280;
+  opacity: 1;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+@media screen and (max-width:1024px) {
+  .custom-scroll::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+@media screen and (max-width:728px) {
+  .custom-scroll::-webkit-scrollbar {
+    width: 0px;
+  }
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #da527f81;
+  border-radius: 10px;
+}
+
+/* ============================================
+   LIVE STREAM ANIMATIONS
+   ============================================ */
+
+/* Flying comment animation */
+@keyframes fly-across {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120vw);
+    opacity: 0;
+  }
+}
+
+.animate-fly-across {
+  animation: fly-across 6s linear forwards;
+}
+
+/* Gift fly animation */
+@keyframes gift-fly {
+  0% {
+    transform: translateX(-100%) translateY(50%) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    transform: translateX(0%) translateY(30%) scale(1.2);
+    opacity: 1;
+  }
+  60% {
+    transform: translateX(50%) translateY(20%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) translateY(50%) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.animate-gift-fly {
+  animation: gift-fly 4s ease-in-out forwards;
+}
+
+/* Float up animation (hearts) */
+@keyframes float-up {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-100px) scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-200px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.animate-float-up {
+  animation: float-up 3s ease-out forwards;
+}
+
+/* Slide down animation */
+@keyframes slide-down {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out forwards;
+}
+
+/* Slide left animation */
+@keyframes slide-left {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-left {
+  animation: slide-left 0.3s ease-out forwards;
+}
+
+/* Scale in animation */
+@keyframes scale-in {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out forwards;
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Slow spin for decorative elements */
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Holographic border animation for Ramazan event */
+@keyframes holographic {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Shimmer animation for gradient text */
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+}

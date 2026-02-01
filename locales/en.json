@@ -1,0 +1,101 @@
+{
+  "common": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "artists": "Artists",
+    "exhibitions": "Exhibitions",
+    "about": "About"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue Shopping",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "calculatedAtCheckout": "Calculated at checkout",
+    "total": "Total",
+    "checkout": "Checkout",
+    "sku": "SKU"
+  },
+  "home": {
+    "bestSellers": {
+      "badge": "Best Sellers",
+      "title": "Our Best Sellers",
+      "description": "Discover our featured products loved by customers",
+      "viewAll": "View All Products"
+    },
+    "categories": {
+      "badge": "Browse by Category",
+      "title": "Explore Different Categories",
+      "description": "Choose the category that suits your taste and enjoy a diverse range of products",
+      "addToCart": "Add to Cart",
+      "viewAll": "View All Products in This Category"
+    },
+    "newArrivals": {
+      "badge": "New In Stock",
+      "title": "Just Arrived",
+      "description": "Discover the latest products added to our collection",
+      "new": "New",
+      "justAdded": "Recently Added",
+      "viewAll": "View All New Products"
+    },
+    "featured": {
+      "badge": "Featured",
+      "title": "Our Featured Products",
+      "description": "Our special selections from the best quality products",
+      "featured": "Featured",
+      "viewDetails": "View Details",
+      "viewAll": "View All Featured Products"
+    },
+    "offers": {
+      "badge": "Special Offers",
+      "title": "Limited Time Offers",
+      "description": "Take advantage of the opportunity and buy now at the best prices before the offers end",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds",
+      "flashSale": "Flash Sale",
+      "viewAll": "View All Offers",
+      "limitedTime": "Limited Time",
+  
+      "days": "Days"
+    },
+    "differentCategory": {
+      "badge": "Discover More",
+      "title": "Diverse Categories",
+      "description": "Browse our wide range of different categories",
+      "products": "Products",
+      "loading": "Loading...",
+      "viewAll": "View All Products in This Category"
+    }
+  },
+  "product": {
+    "notFound": "Product Not Found",
+    "backToHome": "Back to Home",
+    "back": "Back",
+    "sku": "SKU",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "reviews": "Reviews",
+    "off": "OFF",
+    "quantity": "Quantity",
+    "addToCart": "Add to Cart",
+    "freeShipping": "Free shipping on orders over $200",
+    "securePayment": "Secure and protected payment",
+    "easyReturns": "Easy returns within 30 days",
+    "description": "Description",
+    "noDescription": "No description available for this product yet.",
+    "noReviews": "No reviews yet for this product"
+  },
+  "footer": {
+    "contactUs": "Contact Us",
+    "phone": "Phone",
+    "whatsapp": "WhatsApp",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "followUs": "Follow Us",
+    "allRights": "All Rights Reserved"
+  }
+}
