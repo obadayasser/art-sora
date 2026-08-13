@@ -132,9 +132,7 @@ let verificationPromise: Promise<{ success: boolean; deviceId?: number; isTruste
   verificationPromise = (async () => {
     try {
 
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://76.13.135.206:5000/api/v1';
-
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://76.13.135.206:5000/api/v1';
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
 
       
       const response = await fetch(`${API_BASE_URL}/auth/verify-device`, {

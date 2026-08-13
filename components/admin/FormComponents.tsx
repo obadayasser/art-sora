@@ -193,7 +193,11 @@ export function Switch({ label, checked, onChange, disabled = false }: SwitchPro
   );
 }
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'onAnimationStart' | 'onAnimationEnd' | 'onDrag' | 'onDragStart' | 'onDragEnd'
+  > {
   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;

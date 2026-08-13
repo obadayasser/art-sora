@@ -26,16 +26,16 @@ export function EmptyState({ icon: Icon, title, description, action, children }:
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.1, type: 'spring' }}
-        className="w-24 h-24 mb-6 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center"
+        className="w-24 h-24 mb-6 bg-accent-soft rounded-full flex items-center justify-center"
       >
-        <Icon size={48} className="text-purple-500" />
+        <Icon size={48} className="text-accent" />
       </motion.div>
 
       <motion.h2
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="text-2xl font-bold text-gray-900 dark:text-white mb-2 text-center"
+        className="text-2xl font-bold text-ink mb-2 text-center"
       >
         {title}
       </motion.h2>
@@ -44,7 +44,7 @@ export function EmptyState({ icon: Icon, title, description, action, children }:
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="text-gray-600 dark:text-gray-400 mb-6 text-center max-w-md"
+        className="text-ink-soft mb-6 text-center max-w-md"
       >
         {description}
       </motion.p>
@@ -57,7 +57,7 @@ export function EmptyState({ icon: Icon, title, description, action, children }:
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={action.onClick}
-          className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-lg"
+          className="px-8 py-3 bg-accent text-accent-contrast rounded-xl font-semibold hover:bg-accent-hover transition-colors shadow-lg"
         >
           {action.label}
         </motion.button>

@@ -26,10 +26,10 @@ export function LoadingSpinner({ size = 'md', text, fullScreen = false }: Loadin
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
       >
-        <Loader2 className={`${sizeClasses[size]} text-purple-500`} />
+        <Loader2 className={`${sizeClasses[size]} text-accent`} />
       </motion.div>
       {text && (
-        <p className="text-sm text-gray-600 dark:text-gray-400 animate-pulse">
+        <p className="text-sm text-ink-soft animate-pulse">
           {text}
         </p>
       )}
@@ -38,7 +38,7 @@ export function LoadingSpinner({ size = 'md', text, fullScreen = false }: Loadin
 
   if (fullScreen) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         {spinner}
       </div>
     );
@@ -49,14 +49,14 @@ export function LoadingSpinner({ size = 'md', text, fullScreen = false }: Loadin
 
 export function ProductCardSkeleton() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 animate-pulse">
-      <div className="aspect-square bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600" />
+    <div className="bg-card rounded-2xl overflow-hidden shadow-sm border border-line">
+      <div className="aspect-square skeleton" />
       <div className="p-4 space-y-3">
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
+        <div className="h-4 skeleton rounded w-3/4" />
+        <div className="h-4 skeleton rounded w-1/2" />
         <div className="flex items-center justify-between">
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3" />
-          <div className="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+          <div className="h-6 skeleton rounded w-1/3" />
+          <div className="h-8 w-8 skeleton rounded-lg" />
         </div>
       </div>
     </div>

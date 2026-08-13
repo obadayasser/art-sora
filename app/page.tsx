@@ -3,22 +3,19 @@ import { BestSellersSection } from "@/components/home/BestSellersSection";
 import { CategoriesSection } from "@/components/home/CategoriesSection";
 import { NewArrivalsSection } from "@/components/home/NewArrivalsSection";
 import { FeaturedProductsSection } from "@/components/home/FeaturedProductsSection";
-import { SpecialOffersSection } from "@/components/home/SpecialOffersSection2";
-import { DifferentCategorySection } from "@/components/home/DifferentCategorySection";
-import Footer from "@/components/home/Foote";
+import { CategoryTilesSection } from "@/components/home/CategoryTilesSection";
+import Footer from "@/components/home/Footer";
 
 export default function Home() {
-
   return (
-    <div className="">
+    <>
       <Hero />
       <BestSellersSection />
       <CategoriesSection />
       <NewArrivalsSection />
       <FeaturedProductsSection />
-    {/*   <SpecialOffersSection /> */}
-      <DifferentCategorySection />
+      <CategoryTilesSection />
       <Footer />
-    </div>
+    </>
   );
 }

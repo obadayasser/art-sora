@@ -106,23 +106,15 @@ A protected back-office with sidebar navigation and the following modules:
 - [next-intl 4](https://next-intl.dev/) (cookie-based locale, server-side message loading, RTL handling)
 - [next-themes](https://github.com/pacocoursey/next-themes)
 
-**Realtime & Communication**
-
-- [socket.io-client](https://socket.io/) for live updates
-- [Zego Express WebRTC](https://www.zegocloud.com/) and Zego ZIM for in-app messaging / streaming primitives
-
 **Payments**
 
-- [Stripe](https://stripe.com/) (`@stripe/react-stripe-js`, `@stripe/stripe-js`)
 - Local payment methods: Cash on Delivery, Vodafone Cash, InstaPay
+- Discount codes validated server-side
 
-**Auth, Storage, Misc**
+**Storage & Misc**
 
-- [Firebase 12](https://firebase.google.com/) (auth/storage primitives)
 - Cloudflare R2 (remote image hosting via `next/image` `remotePatterns`)
-- `crypto-js` for client-side encryption helpers
-- `qrcode` for 2FA QR provisioning
-- `react-hot-toast` + `sonner` for notifications
+- `react-hot-toast` for notifications
 
 **Tooling**
 
@@ -148,7 +140,7 @@ Browser (Next.js App)
 ```
 
 - **API proxy**: `next.config.ts` rewrites `/api/:path*` to the backend, sidestepping Mixed-Content issues and keeping the browser on a single origin.
-- **CSP headers**: a permissive but explicit `Content-Security-Policy` is configured at the framework level for `connect-src`, `media-src`, and `default-src` so Stripe, Firebase, and the WebRTC SDKs work without surprises.
+- **CSP headers**: an explicit `Content-Security-Policy` is configured at the framework level for `connect-src`, `media-src`, and `default-src`.
 - **Image pipeline**: `next/image` with `remotePatterns` whitelisting R2 (`pub-*.r2.dev`), Unsplash, Pravatar, and the backend.
 - **Strongly typed domain layer**: every entity (Product, Variant, Size, Category, Order, Discount, Review, Revision, Country, Governorate, AdminUser, …) lives in `types/index.ts` and is reused by the client API and the React tree — there is no `any` leaking into the UI.
 
@@ -246,26 +238,11 @@ npm start
 
 ## Environment Variables
 
-Create a `.env.local` at the project root. Copy `/.env.local.example` if present.
+Create a `.env.local` at the project root. Copy `.env.example` as a starting point.
 
 ```env
 # Backend API (used by the client SDK in lib/client/*)
 NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
-
-# Stripe
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-
-# Firebase (if you enable Firebase features)
-NEXT_PUBLIC_FIREBASE_API_KEY=
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
-NEXT_PUBLIC_FIREBASE_APP_ID=
-
-# Zego (real-time messaging / RTC)
-NEXT_PUBLIC_ZEGO_APP_ID=
-NEXT_PUBLIC_ZEGO_SERVER_SECRET=
 ```
 
 > The API base URL is also reachable through the Next.js rewrite (`/api/*` → backend), which avoids browser Mixed-Content errors when serving over HTTPS.
@@ -320,7 +297,6 @@ The checkout (`app/checkout/page.tsx`) supports:
 - **Cash on Delivery** — no upfront capture.
 - **Vodafone Cash** — manual reference workflow.
 - **InstaPay** — instant transfer reference workflow.
-- **Stripe** (wired via `@stripe/react-stripe-js`) — card payments for international customers.
 - **Discount codes** — validated server-side, supports percentage / fixed amount, minimum order, max cap, per-device usage limits, and category/product scoping.
 - **Shipping** — country and governorate selection drives a server-calculated shipping cost and ETA.
 
@@ -346,7 +322,7 @@ The checkout (`app/checkout/page.tsx`) supports:
 - `localStorage`-persisted cart that hydrates on mount with an `mounted` flag to avoid SSR/CSR mismatch.
 - Code-splitting via the App Router segments; the admin bundle is isolated from the storefront.
 - Animations gated behind `framer-motion` so they don't block first paint.
-- Custom Google Fonts (Cairo for Arabic, Montserrat for Latin) loaded via `<link rel="stylesheet">`.
+- Custom Google Fonts (Cairo for Arabic, Montserrat for Latin) self-hosted via `next/font` with `display: swap`.
 
 ---
 
@@ -369,8 +345,7 @@ If you are reviewing this project (e.g. on a CV), the most representative files 
 - Strongly-typed integration layer over a real REST API (no mocks).
 - Admin back-office with role-based access, 2FA, and revision history.
 - Internationalization with full RTL support.
-- Stripe + multi-method payment integration.
-- Real-time/WebRTC primitives (Socket.io + Zego).
+- Multi-method local payment integration (COD, Vodafone Cash, InstaPay) with server-validated discounts.
 - 3D web graphics (Three.js / R3F) integrated into a production layout.
 - State management with React Context, persistence, and SSR-safe hydration.
 - Responsive, accessible, theme-aware UI with Tailwind v4 and Framer Motion.

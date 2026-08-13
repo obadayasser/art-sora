@@ -2,24 +2,24 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
-import { ShoppingCart, Star, Heart, Share2, ArrowLeft, Check, Truck, Shield, RotateCcw } from 'lucide-react';
+import { ShoppingCart, Star, Share2, ArrowLeft, Shield } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
- import Image from 'next/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getProductBySlug, getProductReviews } from '@/lib/client/api';
-import {  getProductVariants, getProductSizes } from '@/lib/client/api-client-orders';
-import { Product, ProductVariant, ProductSize } from '@/types';
-import { toast } from 'sonner';
+import { getProductVariants } from '@/lib/client/api-client-orders';
+import { Product, ProductVariant } from '@/types';
+import toast from 'react-hot-toast';
 
 export default function ProductDetailPage() {
   const t = useTranslations();
+  const locale = useLocale();
   const { slug } = useParams();
   const { addToCart } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [variants, setVariants] = useState<ProductVariant[]>([]);
-  const [sizes, setSizes] = useState<ProductSize[]>([]);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
   const [reviews, setReviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,9 +34,12 @@ export default function ProductDetailPage() {
           const fetchedProduct = await getProductBySlug(slug as string);
           setProduct(fetchedProduct);
 
-          // Fetch variants
           if (fetchedProduct) {
-            const fetchedVariants = await getProductVariants(fetchedProduct.id);
+            const [fetchedVariants, fetchedReviews] = await Promise.all([
+              getProductVariants(fetchedProduct.id),
+              getProductReviews(fetchedProduct.id),
+            ]);
+
             setVariants(fetchedVariants);
 
             // Set default variant
@@ -45,8 +48,6 @@ export default function ProductDetailPage() {
               setSelectedVariant(defaultVariant);
             }
 
-            // Fetch reviews
-            const fetchedReviews = await getProductReviews(fetchedProduct.id);
             setReviews(fetchedReviews);
           }
           setLoading(false);
@@ -62,9 +63,7 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     if (product) {
-      for (let i = 0; i < quantity; i++) {
-        addToCart(product);
-      }
+      addToCart(product, quantity, selectedVariant?.sizeId);
     }
   };
 
@@ -75,11 +74,7 @@ export default function ProductDetailPage() {
     if (navigator.clipboard && window.isSecureContext) {
       try {
         await navigator.clipboard.writeText(productUrl);
-
-        // Show success message
-        if (typeof window !== 'undefined' && (window as any).alert) {
-          toast.success('تم نسخ رابط المنتج! ✓\nProduct link copied!');
-        }
+        toast.success(t('product.linkCopied'));
       } catch (err) {
         console.error('Failed to copy:', err);
       }
@@ -89,9 +84,8 @@ export default function ProductDetailPage() {
     if (navigator.share && product) {
       try {
         await navigator.share({
-          title: product.nameAr || product.nameEn,
-          text: `شاهد هذا المنتج الرائع! 🎨\nCheck out this amazing product!`,
-          url: productUrl
+          title: locale === 'ar' ? product.nameAr : product.nameEn,
+          url: productUrl,
         });
       } catch (err) {
         // Share was cancelled or not supported
@@ -113,19 +107,23 @@ export default function ProductDetailPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-[var(--foreground)] mb-4">
-            {t('product.notFound') || 'المنتج غير موجود'}
+            {t('product.notFound')}
           </h1>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color)] text-white rounded-xl font-semibold"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color)] text-accent-contrast rounded-xl font-semibold"
           >
             <ArrowLeft className="w-5 h-5" />
-            {t('product.backToHome') || 'العودة للرئيسية'}
+            {t('product.backToHome')}
           </Link>
         </div>
       </div>
     );
   }
+
+  const productName = locale === 'ar' ? product.nameAr : product.nameEn;
+  const productDescription = locale === 'ar' ? product.descriptionAr : product.descriptionEn;
+  const categoryName = locale === 'ar' ? product.category?.nameAr : product.category?.nameEn;
 
   const averageRating = reviews.length > 0
     ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
@@ -138,17 +136,17 @@ export default function ProductDetailPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-2 text-sm">
             <Link href="/" className="text-[var(--foreground)]/60 hover:text-[var(--color)] transition-colors">
-              {t('common.home') || 'الرئيسية'}
+              {t('common.home')}
             </Link>
             <span className="text-[var(--foreground)]/40">/</span>
             <Link
-              href={`/categories/${product.category?.slug}`}
+              href={`/products?category=${product.category?.slug}`}
               className="text-[var(--foreground)]/60 hover:text-[var(--color)] transition-colors"
             >
-              {product.category?.nameAr}
+              {categoryName}
             </Link>
             <span className="text-[var(--foreground)]/40">/</span>
-            <span className="text-[var(--foreground)] font-medium">{product.nameAr}</span>
+            <span className="text-[var(--foreground)] font-medium">{productName}</span>
           </div>
         </div>
       </div>
@@ -160,7 +158,7 @@ export default function ProductDetailPage() {
           className="inline-flex items-center gap-2 text-[var(--foreground)]/60 hover:text-[var(--color)] transition-colors mb-8"
         >
           <ArrowLeft className="w-5 h-5" />
-          {t('product.back') || 'العودة'}
+          {t('product.back')}
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -175,14 +173,14 @@ export default function ProductDetailPage() {
               <div className="relative aspect-[4/5] bg-[var(--card-bg)] rounded-2xl overflow-hidden">
                 <Image
                   src={product.images[selectedImage]?.imageUrl || '/placeholder.jpg'}
-                  alt={product.nameAr}
+                  alt={productName}
                   fill
                   className="object-cover"
                   unoptimized
                 />
                 {product.salePrice && (
-                  <div className="absolute top-4 right-4 bg-gradient-to-r from-[#DA5280] to-[#E879A0] text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                    {Math.round((1 - parseFloat(product.salePrice) / parseFloat(product.basePrice)) * 100)}% {t('product.off') || 'خصم'}
+                  <div className="absolute top-4 right-4 bg-accent text-accent-contrast px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                    {Math.round((1 - parseFloat(product.salePrice) / parseFloat(product.basePrice)) * 100)}% {t('product.off')}
                   </div>
                 )}
               </div>
@@ -201,7 +199,7 @@ export default function ProductDetailPage() {
                     >
                       <Image
                         src={image.imageUrl}
-                        alt={`${product.nameAr} ${index + 1}`}
+                        alt={`${productName} ${index + 1}`}
                         fill
                         className="object-cover"
                         unoptimized
@@ -221,19 +219,12 @@ export default function ProductDetailPage() {
           >
             {/* Title */}
             <h1 className="text-3xl md:text-4xl font-bold text-[var(--foreground)] mb-4">
-              {product.nameAr}
+              {productName}
             </h1>
 
             {/* SKU & Stock */}
             <div className="flex items-center gap-4 text-sm text-[var(--foreground)]/60 mb-6">
-              <span>{t('product.sku') || 'رقم المنتج'}: {product.sku}</span>
-              <span>•</span>
-              {/*         <span className={product.stockQuantity > 0 ? 'text-green-500' : 'text-red-500'}>
-                {product.stockQuantity > 0
-                  ? `${t('product.inStock') || 'Available'} (${product.stockQuantity})`
-                  : t('product.outOfStock') || 'غير Available'
-                }
-              </span> */}
+              <span>{t('product.sku')}: {product.sku}</span>
             </div>
 
             {/* Rating */}
@@ -243,14 +234,14 @@ export default function ProductDetailPage() {
                   <Star
                     key={star}
                     className={`w-5 h-5 ${star <= Math.round(parseFloat(averageRating))
-                        ? 'text-yellow-400 fill-yellow-400'
-                        : 'text-gray-300'
+                        ? 'text-gold fill-gold'
+                        : 'text-ink-faint'
                       }`}
                   />
                 ))}
               </div>
               <span className="text-[var(--foreground)]/60">
-                ({reviews.length} {t('product.reviews') || 'تقييم'})
+                ({reviews.length} {t('product.reviews')})
               </span>
             </div>
 
@@ -258,7 +249,7 @@ export default function ProductDetailPage() {
             {variants.length > 0 && (
               <div className="mb-8">
                 <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
-                  المقاس
+                  {t('product.size')}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {variants.map((variant) => (
@@ -272,7 +263,7 @@ export default function ProductDetailPage() {
                           : 'border-[var(--card-border)] hover:border-[var(--color)]/50'
                       } ${!variant.isActive ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                      <div className="font-semibold text-sm">{variant.nameAr || variant.nameEn}</div>
+                      <div className="font-semibold text-sm">{locale === 'ar' ? variant.nameAr : variant.nameEn}</div>
                       <div className="text-xs text-[var(--foreground)]/60">{variant.sizeDimensions}</div>
                     </button>
                   ))}
@@ -284,33 +275,33 @@ export default function ProductDetailPage() {
             <div className="mb-8">
               {selectedVariant?.salePrice ? (
                 <div className="flex items-center gap-4">
-                  <span className="lg:text-4xl text-2xl font-bold text-[#DA5280]">
-                    LE {parseFloat(selectedVariant.salePrice).toFixed(2)}
+                  <span className="lg:text-4xl text-2xl font-bold text-accent">
+                    {t('product.currency')} {parseFloat(selectedVariant.salePrice).toFixed(2)}
                   </span>
                   <span className="lg:text-xl text-[var(--foreground)]/60 line-through">
-                    LE {parseFloat(selectedVariant.basePrice).toFixed(2)}
+                    {t('product.currency')} {parseFloat(selectedVariant.basePrice).toFixed(2)}
                   </span>
-                  <span className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
-                    {parseFloat(selectedVariant.discountPercentage).toFixed(0)}% {t('product.off') || 'خصم'}
+                  <span className="px-3 py-1 bg-danger/10 text-danger rounded-full text-sm font-semibold">
+                    {parseFloat(selectedVariant.discountPercentage).toFixed(0)}% {t('product.off')}
                   </span>
                 </div>
               ) : selectedVariant ? (
                 <span className="text-4xl font-bold text-[var(--color)]">
-                  LE {parseFloat(selectedVariant.basePrice).toFixed(2)}
+                  {t('product.currency')} {parseFloat(selectedVariant.basePrice).toFixed(2)}
                 </span>
               ) : (
                 <span className="text-4xl font-bold text-[var(--color)]">
-                  LE {parseFloat(product.basePrice).toFixed(2)}
+                  {t('product.currency')} {parseFloat(product.basePrice).toFixed(2)}
                 </span>
               )}
               <div className="flex items-center gap-2 mt-2 text-sm text-[var(--foreground)]/60">
                 {selectedVariant?.stockQuantity !== undefined ? (
                 <></>
                 ) : (
-                  <span className={product.stockQuantity > 0 ? 'text-green-500' : 'text-red-500'}>
+                  <span className={product.stockQuantity > 0 ? 'text-success' : 'text-danger'}>
                     {product.stockQuantity > 0
-                      ? `Available (${product.stockQuantity})`
-                      : 'غير Available'
+                      ? `${t('product.inStock')} (${product.stockQuantity})`
+                      : t('product.outOfStock')
                     }
                   </span>
                 )}
@@ -320,12 +311,12 @@ export default function ProductDetailPage() {
             {/* Quantity Selector */}
             <div className="mb-8">
               <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
-                {t('product.quantity') || 'الكمية'}
+                {t('product.quantity')}
               </label>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-12 h-12 rounded-xl bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center text-[var(--foreground)] hover:bg-[var(--color)] hover:text-white transition-colors text-2xl font-bold"
+                  className="w-12 h-12 rounded-xl bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center text-[var(--foreground)] hover:bg-[var(--color)] hover:text-accent-contrast transition-colors text-2xl font-bold"
                 >
                   -
                 </button>
@@ -339,7 +330,7 @@ export default function ProductDetailPage() {
                 />
                 <button
                   onClick={() => setQuantity(Math.min(selectedVariant?.stockQuantity || product.stockQuantity, quantity + 1))}
-                  className="w-12 h-12 rounded-xl bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center text-[var(--foreground)] hover:bg-[var(--color)] hover:text-white transition-colors text-2xl font-bold"
+                  className="w-12 h-12 rounded-xl bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center text-[var(--foreground)] hover:bg-[var(--color)] hover:text-accent-contrast transition-colors text-2xl font-bold"
                 >
                   +
                 </button>
@@ -350,17 +341,16 @@ export default function ProductDetailPage() {
             <div className="flex gap-4 mb-8">
               <button
                 onClick={handleAddToCart}
-                /*      disabled={product.stockQuantity === 0} */
-                className="flex-1 py-4 bg-gradient-to-r from-[#DA5280] to-[#DA5280] text-white rounded-xl font-bold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg"
+                className="flex-1 py-4 bg-accent text-accent-contrast rounded-xl font-bold hover:bg-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg"
               >
                 <ShoppingCart className="w-5 h-5" />
-                {t('product.addToCart') || 'Add to Card'}
+                {t('product.addToCart')}
               </button>
 
               <button
                 onClick={handleShareProduct}
                 className="p-4 rounded-xl bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--foreground)] hover:text-[var(--color)] hover:bg-[var(--card-bg)]/80 transition-colors"
-                title="مشاركة / Share"
+                title={t('product.share')}
               >
                 <Share2 className="w-5 h-5" />
               </button>
@@ -368,18 +358,10 @@ export default function ProductDetailPage() {
 
             {/* Features */}
             <div className="space-y-3 mb-8">
-             {/*  <div className="flex items-center gap-3 text-[var(--foreground)]/80">
-                <Truck className="w-5 h-5 text-[#AAD7F3]" />
-                <span>{t('product.freeShipping') || 'شحن مجاني للطلبات فوق 200'}</span>
-              </div> */}
               <div className="flex items-center gap-3 text-[var(--foreground)]/80">
-                <Shield className="w-5 h-5 text-[#DA5280]" />
-                <span>{t('product.securePayment') || 'دفع آمن ومحمي'}</span>
+                <Shield className="w-5 h-5 text-accent" />
+                <span>{t('product.securePayment')}</span>
               </div>
-       {/*        <div className="flex items-center gap-3 text-[var(--foreground)]/80">
-                <RotateCcw className="w-5 h-5 text-[#FFD700]" />
-                <span>{t('product.easyReturns') || 'استرجاع سهل خلال 30 يوم'}</span>
-              </div> */}
             </div>
 
             {/* Tabs */}
@@ -392,7 +374,7 @@ export default function ProductDetailPage() {
                       : 'text-[var(--foreground)]/60 hover:text-[var(--foreground)]'
                     }`}
                 >
-                  {t('product.description') || 'الوصف'}
+                  {t('product.description')}
                 </button>
                 <button
                   onClick={() => setActiveTab('reviews')}
@@ -401,7 +383,7 @@ export default function ProductDetailPage() {
                       : 'text-[var(--foreground)]/60 hover:text-[var(--foreground)]'
                     }`}
                 >
-                  {t('product.reviews') || 'التقييمات'} ({reviews.length})
+                  {t('product.reviews')} ({reviews.length})
                 </button>
               </div>
             </div>
@@ -413,9 +395,9 @@ export default function ProductDetailPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-[var(--foreground)]/80 leading-relaxed"
               >
-                {product.descriptionAr || (
+                {productDescription || (
                   <p>
-                    {t('product.noDescription') || 'لا يوجد وف متاح لهذا المنتج حالياً.'}
+                    {t('product.noDescription')}
                   </p>
                 )}
               </motion.div>
@@ -437,8 +419,8 @@ export default function ProductDetailPage() {
                               <Star
                                 key={star}
                                 className={`w-4 h-4 ${star <= review.rating
-                                    ? 'text-yellow-400 fill-yellow-400'
-                                    : 'text-gray-300'
+                                    ? 'text-gold fill-gold'
+                                    : 'text-ink-faint'
                                   }`}
                               />
                             ))}
@@ -448,7 +430,7 @@ export default function ProductDetailPage() {
                           </span>
                         </div>
                         <span className="text-sm text-[var(--foreground)]/60">
-                          {new Date(review.createdAt).toLocaleDateString('ar-EG')}
+                          {new Date(review.createdAt).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US')}
                         </span>
                       </div>
                       <h4 className="font-semibold text-[var(--foreground)] mb-2">
@@ -459,7 +441,7 @@ export default function ProductDetailPage() {
                   ))
                 ) : (
                   <div className="text-center py-12 text-[var(--foreground)]/60">
-                    {t('product.noReviews') || 'لا توجد تقييمات لهذا المنتج بعد'}
+                    {t('product.noReviews')}
                   </div>
                 )}
               </motion.div>

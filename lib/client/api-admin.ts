@@ -24,10 +24,7 @@ import type {
 } from '@/types';
 
 // API Base URL - Update this with your actual API URL
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://76.13.135.206:5000/api/v1';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://76.13.135.206:5000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
 
 
 // Helper function to get auth headers

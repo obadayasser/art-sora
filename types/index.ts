@@ -103,17 +103,6 @@ export interface Governorate {
   isActive: boolean;
 }
 
-export interface Review {
-  id: number;
-  productId: number;
-  rating: number;
-  reviewTitle: string;
-  reviewText: string;
-  customerName: string;
-  isApproved: boolean;
-  createdAt: string;
-}
-
 export interface ApiResponse<T> {
   appId: string;
   data: T;

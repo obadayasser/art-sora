@@ -1,104 +1,139 @@
 @import "tailwindcss";
 
+/* ============================================================
+   ArtSora Design Tokens
+   Palette: "premium gallery" — warm paper neutrals + antique
+   gold accent (echoes the golden frames we sell) + warm ink.
+   Every color in the app must come from these tokens; never
+   hardcode hex values or Tailwind palette classes in components.
+   ============================================================ */
+
 /* Light mode (default) */
 :root {
-  --background: #ffffff;
-  --foreground: #111111;
-  --color: #1E293B;
-  --secondary-color: #64748B;
-  --card-bg: #f9f9f9;
-  --card-border: #e5e5e5;
-  --muted: #555555;
-  --muted-foreground: #777777;
-  --section-bg: #f5f5f5;
+  /* Surfaces */
+  --background: #faf9f7;      /* warm paper */
+  --section-bg: #f2efe9;      /* alternating section band */
+  --card-bg: #ffffff;
+  --card-border: #e8e3d9;
+  --border: #e8e3d9;
 
-  /* Text colors */
-  --text-primary: #111111;
-  --text-secondary: #666666;
-  --text-tertiary: #999999;
+  /* Ink */
+  --foreground: #1b1917;
+  --text-primary: #1b1917;
+  --text-secondary: #57534e;
+  --text-tertiary: #a8a29e;
+  --muted: #57534e;
+  --muted-foreground: #a8a29e;
 
-  /* Message colors */
-  --message-received-bg: #ffffff;
+  /* Brand accent — antique gold */
+  --accent: #9a7317;          /* text-safe gold (AA on light surfaces) */
+  --accent-hover: #7c5c12;
+  --accent-contrast: #ffffff; /* text on accent fills */
+  --accent-soft: rgba(154, 115, 23, 0.09);  /* tinted chips/badges */
+  --accent-border: rgba(154, 115, 23, 0.28);
+  --gold: #c9a227;            /* decorative only (gradients, glows) */
 
-  /* Border and shadow */
-  --border: #e5e5e5;
-  --shadow: rgba(0, 0, 0, 0.1);
+  /* Hero / footer stage — always dark, both themes */
+  --stage: #171410;
+  --stage-soft: #241f17;
+  --stage-ink: #f4f1ea;
 
-  /* Shimmer effect */
-  --shimmer-start: #e5e5e5;
-  --shimmer-mid: #f5f5f5;
+  /* Semantic */
+  --success: #1f7a50;
+  --danger: #c43d3d;
 
+  /* Legacy aliases (admin pages + older components) */
+  --color: var(--accent);
+  --secondary-color: var(--text-secondary);
 
+  /* Effects */
+  --shadow: rgba(27, 25, 23, 0.08);
+  --shimmer-start: #eae6dd;
+  --shimmer-mid: #f5f2ec;
 
-  /* Toast colors */
+  /* Toasts */
   --toast-bg: #ffffff;
-  --toast-color: #111111;
-  --toast-border: #e5e5e5;
+  --toast-color: #1b1917;
+  --toast-border: #e8e3d9;
 
-
-  --font-ar: 'Cairo', sans-serif;
-  --font-en: 'Montserrat', sans-serif;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-bold: 700;
+  /* Typography */
+  --font-ar: "Cairo", sans-serif;
+  --font-en: "Montserrat", sans-serif;
 }
 
 /* Dark mode */
 .dark {
-  --background: #0f0f0f;
-  --foreground: #ffffff;
-  --color: #E2E8F0;
-  --secondary-color: #64748B;
-  --card-bg: #1a1a1a;
-  --card-border: #2a2a2a;
-  --muted: #b0b0b0;
-  --muted-foreground: #888888;
-  --section-bg: #151515;
+  --background: #121110;
+  --section-bg: #181613;
+  --card-bg: #1e1b17;
+  --card-border: #2d2822;
+  --border: #2d2822;
 
-  /* Text colors */
-  --text-primary: #ffffff;
-  --text-secondary: #aaaaaa;
-  --text-tertiary: #666666;
+  --foreground: #f4f1ea;
+  --text-primary: #f4f1ea;
+  --text-secondary: #b8b2a7;
+  --text-tertiary: #736d63;
+  --muted: #b8b2a7;
+  --muted-foreground: #736d63;
 
-  /* Message colors */
-  --message-received-bg: #252525;
+  --accent: #d6ae4b;          /* brighter gold for dark surfaces */
+  --accent-hover: #e5c05c;
+  --accent-contrast: #1b1917;
+  --accent-soft: rgba(214, 174, 75, 0.12);
+  --accent-border: rgba(214, 174, 75, 0.32);
+  --gold: #d6ae4b;
 
-  /* Border and shadow */
-  --border: #2a2a2a;
-  --shadow: rgba(0, 0, 0, 0.3);
+  --stage: #0d0b09;
+  --stage-soft: #1a1610;
+  --stage-ink: #f4f1ea;
 
-  /* Shimmer effect */
-  --shimmer-start: #2a2a2a;
-  --shimmer-mid: #333333;
+  --success: #34c08b;
+  --danger: #e06666;
 
+  --shadow: rgba(0, 0, 0, 0.35);
+  --shimmer-start: #2d2822;
+  --shimmer-mid: #3a342c;
 
-
-  /* Toast colors */
-  --toast-bg: #1a1a1a;
-  --toast-color: #ffffff;
-  --toast-border: #2a2a2a;
-
+  --toast-bg: #1e1b17;
+  --toast-color: #f4f1ea;
+  --toast-border: #2d2822;
 }
 
-/* Tailwind v4 theme configuration */
+/* Tailwind v4 theme mapping — enables bg-accent, text-ink, border-line, ... */
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: var(--color);
-  --color-secondary: var(--secondary-color);
+  --color-section: var(--section-bg);
   --color-card: var(--card-bg);
-  --color-card-border: var(--card-border);
+  --color-line: var(--card-border);
+
+  --color-ink: var(--text-primary);
+  --color-ink-soft: var(--text-secondary);
+  --color-ink-faint: var(--text-tertiary);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-border: var(--accent-border);
+  --color-gold: var(--gold);
+
+  --color-stage: var(--stage);
+  --color-stage-soft: var(--stage-soft);
+  --color-stage-ink: var(--stage-ink);
+
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+
+  /* Legacy names used by existing components */
+  --color-primary: var(--accent);
+  --color-secondary: var(--text-secondary);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-section: var(--section-bg);
+  --color-card-border: var(--card-border);
 
-  --font-family-ar: 'Cairo', sans-serif;
-  --font-family-en: 'Montserrat', sans-serif;
-}
-
-* {
-  scroll-behavior: smooth;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  --font-family-ar: "Cairo", sans-serif;
+  --font-family-en: "Montserrat", sans-serif;
 }
 
 body {
@@ -107,7 +142,7 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* RTL support for Arabic */
+/* Language-aware font families */
 [dir="rtl"] {
   font-family: var(--font-ar);
 }
@@ -116,7 +151,88 @@ body {
   font-family: var(--font-en);
 }
 
-/* Custom Progress Bar Styling */
+/* Legacy utility classes kept for existing components */
+.text-primary {
+  color: var(--accent);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.bg-primary {
+  background-color: var(--accent);
+}
+
+.bg-secondary {
+  background-color: var(--text-secondary);
+}
+
+/* Skeleton shimmer for loading placeholders */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--shimmer-start) 25%,
+    var(--shimmer-mid) 50%,
+    var(--shimmer-start) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+}
+
+/* Swiper theming */
+.custom-swiper .swiper-pagination-bullet,
+.swiper-pagination-bullet {
+  background: var(--text-tertiary);
+  opacity: 0.5;
+  width: 8px;
+  height: 8px;
+}
+
+.custom-swiper .swiper-pagination-bullet-active,
+.swiper-pagination-bullet-active {
+  background: var(--accent);
+  opacity: 1;
+  width: 24px;
+  border-radius: 12px;
+}
+
+/* Scrollable areas */
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+@media screen and (max-width: 1024px) {
+  .custom-scroll::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+
+@media screen and (max-width: 728px) {
+  .custom-scroll::-webkit-scrollbar {
+    width: 0px;
+  }
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent-border);
+  border-radius: 10px;
+}
+
+/* Range inputs (admin forms) */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -143,228 +259,4 @@ input[type="range"]::-moz-range-thumb {
   cursor: default;
   border: none;
   box-shadow: none;
-}
-
-.text-primary {
-  color: var(--color);
-}
-
-.text-secondary {
-  color: var(--secondary-color);
-}
-
-.bg-secondary {
-  background-color: var(--secondary-color);
-}
-
-.bg-primary {
-  background-color: var(--color);
-}
-
-.custom-swiper .swiper-pagination-bullet {
-  background: gray;
-  opacity: 0.6;
-}
-
-.custom-swiper .swiper-pagination-bullet-active {
-  background: #DA5280;
-  opacity: 1;
-}
-
-.custom-scroll::-webkit-scrollbar {
-  width: 8px;
-}
-
-@media screen and (max-width:1024px) {
-  .custom-scroll::-webkit-scrollbar {
-    width: 5px;
-  }
-}
-@media screen and (max-width:728px) {
-  .custom-scroll::-webkit-scrollbar {
-    width: 0px;
-  }
-}
-
-.custom-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scroll::-webkit-scrollbar-thumb {
-  background: #da527f81;
-  border-radius: 10px;
-}
-
-/* ==
-   LIVE STREAM ANIMATIONS
-   == */
-
-/* Flying comment animation */
-@keyframes fly-across {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(120vw);
-    opacity: 0;
-  }
-}
-
-.animate-fly-across {
-  animation: fly-across 6s linear forwards;
-}
-
-/* Gift fly animation */
-@keyframes gift-fly {
-  0% {
-    transform: translateX(-100%) translateY(50%) scale(0.5);
-    opacity: 0;
-  }
-  20% {
-    transform: translateX(0%) translateY(30%) scale(1.2);
-    opacity: 1;
-  }
-  60% {
-    transform: translateX(50%) translateY(20%) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%) translateY(50%) scale(0.8);
-    opacity: 0;
-  }
-}
-
-.animate-gift-fly {
-  animation: gift-fly 4s ease-in-out forwards;
-}
-
-/* Float up animation (hearts) */
-@keyframes float-up {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(-100px) scale(1.2);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(-200px) scale(0.8);
-    opacity: 0;
-  }
-}
-
-.animate-float-up {
-  animation: float-up 3s ease-out forwards;
-}
-
-/* Slide down animation */
-@keyframes slide-down {
-  0% {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.animate-slide-down {
-  animation: slide-down 0.3s ease-out forwards;
-}
-
-/* Slide left animation */
-@keyframes slide-left {
-  0% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.animate-slide-left {
-  animation: slide-left 0.3s ease-out forwards;
-}
-
-/* Scale in animation */
-@keyframes scale-in {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-}
-
-.animate-scale-in {
-  animation: scale-in 0.3s ease-out forwards;
-}
-
-/* Fade in animation */
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out forwards;
-}
-
-/* Slow spin for decorative elements */
-@keyframes spin-slow {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 3s linear infinite;
-}
-
-/* Holographic border animation for Ramazan event */
-@keyframes holographic {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 200% 50%;
-  }
-}
-
-/* Shimmer animation for gradient text */
-@keyframes shimmer {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-shimmer {
-  background-size: 200% auto;
-  animation: shimmer 3s linear infinite;
 }

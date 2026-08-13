@@ -1,10 +1,21 @@
 {
   "common": {
     "home": "Home",
-    "gallery": "Gallery",
-    "artists": "Artists",
-    "exhibitions": "Exhibitions",
-    "about": "About"
+    "products": "Products",
+    "categories": "Categories",
+    "about": "About",
+    "contact": "Contact",
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme"
+  },
+  "hero": {
+    "title": "Premium Frames",
+    "tagline": "Football • Music • Series • Art & More",
+    "description": "Discover exclusive premium frames featuring football legends, music icons, TV series stars, and all your favorite moments. Own a piece of history in a stunning golden frame.",
+    "browseCta": "Browse Collection",
+    "categoriesCta": "Explore Categories",
+    "scroll": "Scroll"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -28,45 +39,26 @@
       "badge": "Browse by Category",
       "title": "Explore Different Categories",
       "description": "Choose the category that suits your taste and enjoy a diverse range of products",
-      "addToCart": "Add to Cart",
-      "viewAll": "View All Products in This Category"
+      "viewAll": "View All in This Category",
+      "browseAll": "Browse All Categories"
     },
     "newArrivals": {
       "badge": "New In Stock",
       "title": "Just Arrived",
       "description": "Discover the latest products added to our collection",
-      "new": "New",
-      "justAdded": "Recently Added",
       "viewAll": "View All New Products"
     },
     "featured": {
       "badge": "Featured",
       "title": "Our Featured Products",
       "description": "Our special selections from the best quality products",
-      "featured": "Featured",
-      "viewDetails": "View Details",
       "viewAll": "View All Featured Products"
     },
-    "offers": {
-      "badge": "Special Offers",
-      "title": "Limited Time Offers",
-      "description": "Take advantage of the opportunity and buy now at the best prices before the offers end",
-      "hours": "Hours",
-      "minutes": "Minutes",
-      "seconds": "Seconds",
-      "flashSale": "Flash Sale",
-      "viewAll": "View All Offers",
-      "limitedTime": "Limited Time",
-  
-      "days": "Days"
-    },
-    "differentCategory": {
+    "categoryTiles": {
       "badge": "Discover More",
-      "title": "Diverse Categories",
-      "description": "Browse our wide range of different categories",
-      "products": "Products",
-      "loading": "Loading...",
-      "viewAll": "View All Products in This Category"
+      "title": "Shop by Category",
+      "description": "Browse our collections and find the frame that fits your story",
+      "shopNow": "Shop Now"
     }
   },
   "product": {
@@ -80,22 +72,163 @@
     "off": "OFF",
     "quantity": "Quantity",
     "addToCart": "Add to Cart",
-    "freeShipping": "Free shipping on orders over $200",
+    "freeShipping": "Free shipping on orders over LE 2,000",
     "securePayment": "Secure and protected payment",
     "easyReturns": "Easy returns within 30 days",
     "description": "Description",
     "noDescription": "No description available for this product yet.",
-    "noReviews": "No reviews yet for this product"
+    "noReviews": "No reviews yet for this product",
+    "currency": "LE",
+    "save": "Save",
+    "viewDetails": "View Details",
+    "size": "Size",
+    "share": "Share",
+    "linkCopied": "Product link copied!",
+    "available": "Available"
+  },
+  "products": {
+    "title": "Our Products",
+    "items": "items found",
+    "searchPlaceholder": "Search products...",
+    "filters": "Filters",
+    "categories": "Categories",
+    "allCategories": "All Categories",
+    "priceRange": "Price Range",
+    "min": "Min",
+    "max": "Max",
+    "sortBy": "Sort By",
+    "sort": {
+      "newest": "Newest First",
+      "priceLowToHigh": "Price: Low to High",
+      "priceHighToLow": "Price: High to Low"
+    },
+    "noResults": "No Products Found",
+    "noResultsDescription": "Try adjusting your filters or search terms",
+    "clearFilters": "Clear Filters",
+    "loadError": "Failed to load products",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "close": "Close"
+  },
+  "categoriesPage": {
+    "badge": "Our Collections",
+    "title": "All Categories",
+    "description": "Every collection, one place — pick a theme and start exploring"
+  },
+  "about": {
+    "badge": "Who We Are",
+    "title": "About ArtSora",
+    "intro": "We turn iconic moments into premium framed art.",
+    "story": "ArtSora started with a simple idea: the moments that shaped us — a legendary goal, an unforgettable song, a scene we can quote by heart — deserve a place on our walls. We produce museum-grade prints of football legends, music icons, and beloved series, finish them in hand-crafted golden frames, and deliver them ready to hang.",
+    "craftTitle": "Crafted Frames",
+    "craftText": "Every frame is finished by hand with premium materials, built to make the artwork the hero of any room.",
+    "authenticTitle": "Museum-Grade Prints",
+    "authenticText": "High-resolution printing on quality stock, with colors that stay vivid for years.",
+    "deliveryTitle": "Delivered Ready to Hang",
+    "deliveryText": "Careful packaging and nationwide delivery — your frame arrives safe and ready for the wall.",
+    "ctaTitle": "Find the frame that tells your story"
+  },
+  "contact": {
+    "badge": "Get in Touch",
+    "title": "Contact Us",
+    "description": "Questions about an order, a custom frame, or anything else — we're happy to help",
+    "callUs": "Call Us",
+    "whatsapp": "WhatsApp",
+    "whatsappText": "Chat with us directly",
+    "faqPrompt": "Looking for a quick answer?",
+    "faqLink": "Browse frequently asked questions"
+  },
+  "faq": {
+    "badge": "Help Center",
+    "title": "Frequently Asked Questions",
+    "description": "Quick answers about ordering, shipping, and our frames",
+    "q1": "How long does delivery take?",
+    "a1": "Orders are prepared within 1–2 business days and typically delivered within 2–5 business days depending on your governorate. You'll see the estimated time for your area at checkout.",
+    "q2": "What payment methods do you accept?",
+    "a2": "We accept cash on delivery, Vodafone Cash, and InstaPay. You choose your preferred method at checkout.",
+    "q3": "Can I order a custom frame with my own image?",
+    "a3": "Yes — contact us on WhatsApp with your image and preferred size, and we'll craft a custom frame for you.",
+    "q4": "What sizes are available?",
+    "a4": "Most designs come in multiple sizes, shown on each product page. If you need a size you don't see, reach out and we'll help.",
+    "q5": "What if my frame arrives damaged?",
+    "a5": "Every frame is packed with protective layers. If anything arrives damaged, send us a photo within 48 hours and we'll replace it free of charge.",
+    "q6": "Can I return or exchange my order?",
+    "a6": "Yes — returns and exchanges are accepted within 30 days for items in their original condition. Custom frames can only be exchanged if damaged or misprinted."
+  },
+  "checkout": {
+    "title": "Checkout",
+    "contactInfo": "Contact Information",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "shippingInfo": "Shipping Information",
+    "country": "Country",
+    "governorate": "Governorate",
+    "city": "City",
+    "addressLine1": "Address Line 1",
+    "addressLine2": "Address Line 2 (optional)",
+    "paymentMethod": "Payment Method",
+    "cod": "Cash on Delivery",
+    "codDescription": "Pay in cash when your order arrives",
+    "vodafoneCash": "Vodafone Cash",
+    "vodafoneDescription": "Pay via Vodafone Cash wallet",
+    "instapay": "InstaPay",
+    "instapayDescription": "Pay via InstaPay transfer",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "shipping": "Shipping",
+    "total": "Total",
+    "placeOrder": "Place Order",
+    "processing": "Processing...",
+    "emptyCart": "Your Cart is Empty",
+    "emptyCartDescription": "Add some products before checking out",
+    "continueShopping": "Continue Shopping",
+    "discountCode": "Discount code",
+    "apply": "Apply",
+    "requiredField": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidPhone": "Please enter a valid phone number",
+    "orderSuccess": "Order placed successfully!",
+    "orderFailed": "Failed to place order. Please try again.",
+    "discountApplied": "Discount applied!",
+    "discountInvalid": "Invalid or expired discount code"
+  },
+  "orderConfirmation": {
+    "title": "Order Confirmed",
+    "thankYou": "Thank you for your order! We've received it and will start preparing it right away.",
+    "orderNumberLabel": "Order Number",
+    "statusLabel": "Order Status",
+    "whatsNextTitle": "What's Next?",
+    "step1": "We prepare and quality-check your frame",
+    "step2": "Your order ships with our delivery partner",
+    "step3": "Pay on delivery and enjoy your new frame",
+    "contactUs": "Questions about your order? Contact us",
+    "backHome": "Back to Home",
+    "viewProducts": "Continue Shopping",
+    "loading": "Loading your order...",
+    "notFound": "We couldn't find this order"
+  },
+  "notFound": {
+    "title": "This page seems to have left the gallery",
+    "description": "The page you're looking for doesn't exist or has been moved. Let's get you back to the collection.",
+    "backHome": "Back to Home",
+    "browseProducts": "Browse Products"
   },
   "footer": {
-    "contactUs": "Contact Us",
+    "blurb": "Premium framed prints of the legends and moments you love — crafted with care, delivered ready to hang.",
+    "contactUs": "Contact & Support",
     "phone": "Phone",
     "whatsapp": "WhatsApp",
     "quickLinks": "Quick Links",
     "home": "Home",
     "products": "Products",
     "categories": "Categories",
-    "followUs": "Follow Us",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "faq": "FAQ",
     "allRights": "All Rights Reserved"
   }
 }

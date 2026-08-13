@@ -1,13 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Category, Product } from '@/types';
 import { getHeaders } from './api-client';
 
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://76.13.135.206:5000/api/v1';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://76.13.135.206:5000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
 
 
 // Logging helpers

@@ -17,11 +17,11 @@ export function Navbar() {
     const { getCartCount, setIsOpen } = useCart();
 
     const navLinks = [
-        { href: "/", label: t("common.home"), requiresAuth: false },
-        { href: "/products", label: "Products", requiresAuth: false },
-        { href: "/artists", label: t("common.artists"), requiresAuth: false },
-        { href: "/exhibitions", label: t("common.exhibitions"), requiresAuth: false },
-        { href: "/about", label: t("common.about"), requiresAuth: false },
+        { href: "/", label: t("common.home") },
+        { href: "/products", label: t("common.products") },
+        { href: "/categories", label: t("common.categories") },
+        { href: "/about", label: t("common.about") },
+        { href: "/contact", label: t("common.contact") },
     ];
 
 
@@ -49,12 +49,12 @@ export function Navbar() {
                             <div className="relative">
                                 <Image
                                     src="/logo.png"
-                                    alt="Vibezo Logo"
+                                    alt="ArtSora logo"
                                     width={80}
                                     height={45}
                                     className="rounded-2xl transition-transform duration-200 group-hover:scale-105"
                                 />
-                                <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-[#DA5280]/20 to-[#AAD7F3]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                                <div className="absolute inset-0 rounded-2xl bg-accent-soft opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                             </div>
                         </Link>
                     </div>
@@ -90,11 +90,12 @@ export function Navbar() {
                         {/* Cart Button */}
                         <button
                             onClick={() => setIsOpen(true)}
+                            aria-label={t("cart.title")}
                             className="relative p-2 rounded-xl bg-[var(--card-bg)] hover:bg-[var(--card-border)] transition-all duration-200 group"
                         >
                             <ShoppingCart className="w-5 h-5 text-[var(--foreground)] group-hover:text-[var(--color)] transition-colors" />
                             {getCartCount() > 0 && (
-                                <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-[#DA5280] to-[#AAD7F3] text-white text-xs rounded-full flex items-center justify-center font-bold">
+                                <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-contrast text-xs rounded-full flex items-center justify-center font-bold">
                                     {getCartCount()}
                                 </span>
                             )}
@@ -129,14 +130,14 @@ export function Navbar() {
                             {/* Settings section */}
                             <div className="mt-4 pt-4 border-t border-[var(--card-border)] px-2 space-y-2">
                                 <div className="flex items-center justify-between px-2">
-                                    <span className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider">Settings</span>
+                                    <span className="text-xs font-medium text-[var(--muted)] uppercase tracking-wider">{t("common.settings")}</span>
                                 </div>
                                 <div className="flex items-center gap-3 px-2 py-2">
-                                    <span className="text-sm text-[var(--foreground)]">Language</span>
+                                    <span className="text-sm text-[var(--foreground)]">{t("common.language")}</span>
                                     <LanguageSwitcher />
                                 </div>
                                 <div className="flex items-center gap-3 px-2 py-2">
-                                    <span className="text-sm text-[var(--foreground)]">Theme</span>
+                                    <span className="text-sm text-[var(--foreground)]">{t("common.theme")}</span>
                                     <ThemeToggle />
                                 </div>
                             </div>
